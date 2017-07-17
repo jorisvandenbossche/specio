@@ -1,0 +1,717 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>specio’s user API &mdash; specio 0.0.1.dev0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/specio.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="_static/gallery.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="specio 0.0.1.dev0 documentation" href="index.html"/>
+        <link rel="up" title="User documentation" href="sec_user.html"/>
+        <link rel="next" title="Docs for specio formats" href="formats.html"/>
+        <link rel="prev" title="User documentation" href="sec_user.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> specio
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.1.dev0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="sec_gettingstarted.html">Getting started</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="sec_user.html">User documentation</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">User API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="formats.html">Docs for the formats</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="sec_dev.html">Developer documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">specio</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="sec_user.html">User documentation</a> &raquo;</li>
+        
+      <li>specio&#8217;s user API</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/api.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-specio.core.functions">
+<span id="specio-s-user-api"></span><h1>specio&#8217;s user API<a class="headerlink" href="#module-specio.core.functions" title="Permalink to this headline">¶</a></h1>
+<p>These functions represent specio&#8217;s main interface for the user. They provide a
+common API to read spectra data for a large variety of formats. All read
+functions accept keyword arguments, which are passed on to the format that does
+the actual work.  To see what keyword arguments are supported by a specific
+format, use the <a class="reference internal" href="#specio.core.functions.help" title="specio.core.functions.help"><code class="xref py py-func docutils literal"><span class="pre">help()</span></code></a> function.</p>
+<p>Functions for reading:</p>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference internal" href="#specio.core.functions.specread" title="specio.core.functions.specread"><code class="xref py py-func docutils literal"><span class="pre">specread()</span></code></a> - read a file with spectra from the specified uri</li>
+</ul>
+</div></blockquote>
+<p>More control:</p>
+<p>For a larger degree of control, specio provides a function
+<a class="reference internal" href="#specio.core.functions.get_reader" title="specio.core.functions.get_reader"><code class="xref py py-func docutils literal"><span class="pre">get_reader()</span></code></a>. It returns an <a class="reference internal" href="#specio.core.format.Reader" title="specio.core.format.Reader"><code class="xref py py-class docutils literal"><span class="pre">Reader</span></code></a> object, which can be used
+to read data and meta data in a more controlled manner.  This also allows
+specific scientific formats to be exposed in a way that best suits that
+file-format.</p>
+<hr class="docutils" />
+<p>Supported resource URI&#8217;s:</p>
+<p>All functions described here accept a URI to describe the resource to
+read from or write to. These can be a wide range of things.</p>
+<p>For reading:</p>
+<ul class="simple">
+<li>a normal filename, e.g. <code class="docutils literal"><span class="pre">'c:\foo\bar.png'</span></code></li>
+<li>a file object with a <code class="docutils literal"><span class="pre">read()</span></code> / <code class="docutils literal"><span class="pre">write()</span></code> method.</li>
+</ul>
+<dl class="function">
+<dt id="specio.core.functions.get_reader">
+<code class="descclassname">specio.core.functions.</code><code class="descname">get_reader</code><span class="sig-paren">(</span><em>uri</em>, <em>format=None</em>, <em>mode='?'</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/specio/core/functions.html#get_reader"><span class="viewcode-link">[source]</span></a><a class="reference external" href="https://github.com/glemaitre/specio/blob/7ef2be8/pydicom/../../../../../Documents/code/research/lypsis/specio/specio/core/functions.py#L65"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#specio.core.functions.get_reader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a Reader instance.</p>
+<p>Returns a <a class="reference internal" href="#specio.core.format.Reader" title="specio.core.format.Reader"><code class="xref py py-class docutils literal"><span class="pre">Reader</span></code></a> object which can be used to read data
+and meta data from the specified file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>uri</strong> : {str, file}</p>
+<blockquote>
+<div><p>The resource to load the image from, e.g. a filename.</p>
+</div></blockquote>
+<p><strong>format</strong> : str</p>
+<blockquote>
+<div><p>The format to use to read the file. By default specio selects
+the appropriate for you based on the filename and its contents.</p>
+</div></blockquote>
+<p><strong>mode</strong> : {&#8216;s&#8217;, &#8216;S&#8217;, &#8216;?&#8217;}</p>
+<blockquote>
+<div><p>Used to give the reader a hint on what the user expects (default &#8221;?&#8221;):
+&#8220;s&#8221; for a single spectra, &#8220;S&#8221; for multiple spectrum or
+&#8221;?&#8221; for don&#8217;t care.</p>
+</div></blockquote>
+<p><strong>kwargs</strong> : dict</p>
+<blockquote>
+<div><p>Further keyword arguments are passed to the reader. See <a class="reference internal" href="#specio.core.functions.help" title="specio.core.functions.help"><code class="xref py py-func docutils literal"><span class="pre">help()</span></code></a>
+to see what arguments are available for a particular format.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>reader</strong> : Format.Reader</p>
+<blockquote class="last">
+<div><p><code class="xref py py-class docutils literal"><span class="pre">specio.Reader</span></code> instance allowing to read the data.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="specio.core.functions.help">
+<code class="descclassname">specio.core.functions.</code><code class="descname">help</code><span class="sig-paren">(</span><em>name=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/specio/core/functions.html#help"><span class="viewcode-link">[source]</span></a><a class="reference external" href="https://github.com/glemaitre/specio/blob/7ef2be8/pydicom/../../../../../Documents/code/research/lypsis/specio/specio/core/functions.py#L44"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#specio.core.functions.help" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print the help regarding a given format.</p>
+<p>Print the documentation of the format specified by name, or a list of
+supported formats if name is omitted.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>name</strong> : str</p>
+<blockquote class="last">
+<div><p>Can be the name of a format, a filename extension, or a full
+filename. See also the <a class="reference internal" href="formats.html"><span class="doc">formats page</span></a>.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="specio.core.functions.read">
+<code class="descclassname">specio.core.functions.</code><code class="descname">read</code><span class="sig-paren">(</span><em>uri</em>, <em>format=None</em>, <em>mode='?'</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/glemaitre/specio/blob/7ef2be8/pydicom/../../../../../Documents/code/research/lypsis/specio/specio/core/functions.py#L65"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#specio.core.functions.read" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a Reader instance.</p>
+<p>Returns a <a class="reference internal" href="#specio.core.format.Reader" title="specio.core.format.Reader"><code class="xref py py-class docutils literal"><span class="pre">Reader</span></code></a> object which can be used to read data
+and meta data from the specified file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>uri</strong> : {str, file}</p>
+<blockquote>
+<div><p>The resource to load the image from, e.g. a filename.</p>
+</div></blockquote>
+<p><strong>format</strong> : str</p>
+<blockquote>
+<div><p>The format to use to read the file. By default specio selects
+the appropriate for you based on the filename and its contents.</p>
+</div></blockquote>
+<p><strong>mode</strong> : {&#8216;s&#8217;, &#8216;S&#8217;, &#8216;?&#8217;}</p>
+<blockquote>
+<div><p>Used to give the reader a hint on what the user expects (default &#8221;?&#8221;):
+&#8220;s&#8221; for a single spectra, &#8220;S&#8221; for multiple spectrum or
+&#8221;?&#8221; for don&#8217;t care.</p>
+</div></blockquote>
+<p><strong>kwargs</strong> : dict</p>
+<blockquote>
+<div><p>Further keyword arguments are passed to the reader. See <a class="reference internal" href="#specio.core.functions.help" title="specio.core.functions.help"><code class="xref py py-func docutils literal"><span class="pre">help()</span></code></a>
+to see what arguments are available for a particular format.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>reader</strong> : Format.Reader</p>
+<blockquote class="last">
+<div><p><code class="xref py py-class docutils literal"><span class="pre">specio.Reader</span></code> instance allowing to read the data.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="specio.core.functions.specread">
+<code class="descclassname">specio.core.functions.</code><code class="descname">specread</code><span class="sig-paren">(</span><em>uri</em>, <em>format=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/specio/core/functions.html#specread"><span class="viewcode-link">[source]</span></a><a class="reference external" href="https://github.com/glemaitre/specio/blob/7ef2be8/pydicom/../../../../../Documents/code/research/lypsis/specio/specio/core/functions.py#L114"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#specio.core.functions.specread" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read spectra in a given format.</p>
+<p>Reads spectrum from the specified file. Returns a <code class="xref py py-class docutils literal"><span class="pre">specio.Spectrum</span></code>
+instance containing the data, wavelength, and the meta data</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>uri</strong> : {str, file}</p>
+<blockquote>
+<div><p>The resource to load the image from, e.g. a filename, http address or
+file object, see the docs for more info.</p>
+</div></blockquote>
+<p><strong>format</strong> : str</p>
+<blockquote>
+<div><p>The format to use to read the file. By default imageio selects
+the appropriate for you based on the filename and its contents.</p>
+</div></blockquote>
+<p><strong>kwargs</strong> : dict</p>
+<blockquote>
+<div><p>Further keyword arguments are passed to the reader. See <a class="reference internal" href="#specio.core.functions.help" title="specio.core.functions.help"><code class="xref py py-func docutils literal"><span class="pre">help()</span></code></a>
+to see what arguments are available for a particular format.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>spectrum</strong> : specio.Spectrum</p>
+<blockquote class="last">
+<div><p>A <code class="xref py py-class docutils literal"><span class="pre">specio.Spectrum</span></code> instance containing the data, wavelength,
+and meta data.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<hr class="docutils" />
+<dl class="function">
+<dt id="specio.help">
+<code class="descclassname">specio.</code><code class="descname">help</code><span class="sig-paren">(</span><em>name=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/specio/core/functions.html#help"><span class="viewcode-link">[source]</span></a><a class="reference external" href="https://github.com/glemaitre/specio/blob/7ef2be8/pydicom/../../../../../Documents/code/research/lypsis/specio/specio/core/functions.py#L44"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#specio.help" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print the help regarding a given format.</p>
+<p>Print the documentation of the format specified by name, or a list of
+supported formats if name is omitted.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>name</strong> : str</p>
+<blockquote class="last">
+<div><p>Can be the name of a format, a filename extension, or a full
+filename. See also the <a class="reference internal" href="formats.html"><span class="doc">formats page</span></a>.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="specio.show_formats">
+<code class="descclassname">specio.</code><code class="descname">show_formats</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/glemaitre/specio/blob/7ef2be8/pydicom/../../../../../Documents/code/research/lypsis/specio/specio/core/format.py#L618"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#specio.show_formats" title="Permalink to this definition">¶</a></dt>
+<dd><p>Show a nicely formatted list of available formats.</p>
+</dd></dl>
+
+<hr class="docutils" />
+<dl class="function">
+<dt id="specio.specread">
+<code class="descclassname">specio.</code><code class="descname">specread</code><span class="sig-paren">(</span><em>uri</em>, <em>format=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/specio/core/functions.html#specread"><span class="viewcode-link">[source]</span></a><a class="reference external" href="https://github.com/glemaitre/specio/blob/7ef2be8/pydicom/../../../../../Documents/code/research/lypsis/specio/specio/core/functions.py#L114"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#specio.specread" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read spectra in a given format.</p>
+<p>Reads spectrum from the specified file. Returns a <code class="xref py py-class docutils literal"><span class="pre">specio.Spectrum</span></code>
+instance containing the data, wavelength, and the meta data</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>uri</strong> : {str, file}</p>
+<blockquote>
+<div><p>The resource to load the image from, e.g. a filename, http address or
+file object, see the docs for more info.</p>
+</div></blockquote>
+<p><strong>format</strong> : str</p>
+<blockquote>
+<div><p>The format to use to read the file. By default imageio selects
+the appropriate for you based on the filename and its contents.</p>
+</div></blockquote>
+<p><strong>kwargs</strong> : dict</p>
+<blockquote>
+<div><p>Further keyword arguments are passed to the reader. See <a class="reference internal" href="#specio.core.functions.help" title="specio.core.functions.help"><code class="xref py py-func docutils literal"><span class="pre">help()</span></code></a>
+to see what arguments are available for a particular format.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>spectrum</strong> : specio.Spectrum</p>
+<blockquote class="last">
+<div><p>A <code class="xref py py-class docutils literal"><span class="pre">specio.Spectrum</span></code> instance containing the data, wavelength,
+and meta data.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<hr class="docutils" />
+<dl class="function">
+<dt id="specio.get_reader">
+<code class="descclassname">specio.</code><code class="descname">get_reader</code><span class="sig-paren">(</span><em>uri</em>, <em>format=None</em>, <em>mode='?'</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/specio/core/functions.html#get_reader"><span class="viewcode-link">[source]</span></a><a class="reference external" href="https://github.com/glemaitre/specio/blob/7ef2be8/pydicom/../../../../../Documents/code/research/lypsis/specio/specio/core/functions.py#L65"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#specio.get_reader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a Reader instance.</p>
+<p>Returns a <a class="reference internal" href="#specio.core.format.Reader" title="specio.core.format.Reader"><code class="xref py py-class docutils literal"><span class="pre">Reader</span></code></a> object which can be used to read data
+and meta data from the specified file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>uri</strong> : {str, file}</p>
+<blockquote>
+<div><p>The resource to load the image from, e.g. a filename.</p>
+</div></blockquote>
+<p><strong>format</strong> : str</p>
+<blockquote>
+<div><p>The format to use to read the file. By default specio selects
+the appropriate for you based on the filename and its contents.</p>
+</div></blockquote>
+<p><strong>mode</strong> : {&#8216;s&#8217;, &#8216;S&#8217;, &#8216;?&#8217;}</p>
+<blockquote>
+<div><p>Used to give the reader a hint on what the user expects (default &#8221;?&#8221;):
+&#8220;s&#8221; for a single spectra, &#8220;S&#8221; for multiple spectrum or
+&#8221;?&#8221; for don&#8217;t care.</p>
+</div></blockquote>
+<p><strong>kwargs</strong> : dict</p>
+<blockquote>
+<div><p>Further keyword arguments are passed to the reader. See <a class="reference internal" href="#specio.core.functions.help" title="specio.core.functions.help"><code class="xref py py-func docutils literal"><span class="pre">help()</span></code></a>
+to see what arguments are available for a particular format.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>reader</strong> : Format.Reader</p>
+<blockquote class="last">
+<div><p><code class="xref py py-class docutils literal"><span class="pre">specio.Reader</span></code> instance allowing to read the data.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<hr class="docutils" />
+<dl class="class">
+<dt id="specio.core.format.Reader">
+<em class="property">class </em><code class="descclassname">specio.core.format.</code><code class="descname">Reader</code><span class="sig-paren">(</span><em>format</em>, <em>request</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/glemaitre/specio/blob/7ef2be8/pydicom/../../../../../Documents/code/research/lypsis/specio/doc/sphinxext/specio_ext.py#L"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#specio.core.format.Reader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Context manager to read the spectra.</p>
+<p>The purpose of a reader object is to read data from an spectra
+resource, and should be obtained by calling <a class="reference internal" href="#specio.core.functions.get_reader" title="specio.core.functions.get_reader"><code class="xref py py-func docutils literal"><span class="pre">get_reader()</span></code></a>.</p>
+<p>A reader can be used as an iterator to read multiple images, and (if
+the format permits) only reads data from the file when new data is
+requested (i.e. streaming). A reader can also be used as a context
+manager so that it is automatically closed.</p>
+<p>Plugins implement Reader&#8217;s for different formats. Though rare, plugins
+may provide additional functionality (beyond what is provided by the
+base reader class).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>request</strong> : Request</p>
+<blockquote class="last">
+<div><p>The request to read a specific resource.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="specio.core.format.Reader.close">
+<code class="descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/glemaitre/specio/blob/7ef2be8/pydicom/../../../../../Documents/code/research/lypsis/specio/specio/core/format.py#L352"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#specio.core.format.Reader.close" title="Permalink to this definition">¶</a></dt>
+<dd><p>Flush and close the reader.</p>
+<p>This method has no effect if it is already closed.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>None</strong></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="specio.core.format.Reader.format">
+<code class="descname">format</code><a class="headerlink" href="#specio.core.format.Reader.format" title="Permalink to this definition">¶</a></dt>
+<dd><p>The <a class="reference internal" href="generated/specio.core.Format.html#specio.core.Format" title="specio.core.Format"><code class="xref py py-class docutils literal"><span class="pre">Format</span></code></a> object corresponding to the current
+read/write operation.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="specio.core.format.Reader.get_data">
+<code class="descname">get_data</code><span class="sig-paren">(</span><em>index</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/glemaitre/specio/blob/7ef2be8/pydicom/../../../../../Documents/code/research/lypsis/specio/specio/core/format.py#L223"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#specio.core.format.Reader.get_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read the data from the file and return a <code class="docutils literal"><span class="pre">Spectrum</span></code> instance.</p>
+<p>Read data from the file, using the spectrum index. The returned
+spectrum has a <code class="docutils literal"><span class="pre">meta</span></code> attribute with the meta data.</p>
+<p>Some formats may support additional keyword arguments. These are
+listed in the documentation of those formats.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>index</strong> : int</p>
+<blockquote>
+<div><p>The index of the spectra file to read.</p>
+</div></blockquote>
+<p><strong>kwargs: dict</strong></p>
+<blockquote>
+<div><p>Additional arguments which might used by the given format.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>spectrum</strong> : Spectrum</p>
+<blockquote class="last">
+<div><p>A <code class="docutils literal"><span class="pre">Spectrum</span></code> instance containing the data and metadata.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="specio.core.format.Reader.get_length">
+<code class="descname">get_length</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/glemaitre/specio/blob/7ef2be8/pydicom/../../../../../Documents/code/research/lypsis/specio/specio/core/format.py#L202"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#specio.core.format.Reader.get_length" title="Permalink to this definition">¶</a></dt>
+<dd><p>The number of spectrum.</p>
+<p>Get the number of spectrum in the file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>length</strong> : int</p>
+<blockquote class="last">
+<div><p>The number of spectrum. The result can be:</p>
+<blockquote>
+<div><ul class="simple">
+<li>0 for files that only have meta data</li>
+<li>1 for singleton spectrum</li>
+<li>N for spectra series</li>
+</ul>
+</div></blockquote>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>You can also use <code class="docutils literal"><span class="pre">len(reader_object)</span></code></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="specio.core.format.Reader.get_meta_data">
+<code class="descname">get_meta_data</code><span class="sig-paren">(</span><em>index=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/glemaitre/specio/blob/7ef2be8/pydicom/../../../../../Documents/code/research/lypsis/specio/specio/core/format.py#L270"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#specio.core.format.Reader.get_meta_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read the meta data for a given spectrum.</p>
+<p>Read meta data from the file. using the spectrum index. If the
+index is omitted or None, return the file&#8217;s (global) meta data.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>index</strong> : int</p>
+<blockquote>
+<div><p>The index of the spectra file to read.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>meta</strong> : dict</p>
+<blockquote class="last">
+<div><p>A dictionary containing the meta data.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p><code class="xref py py-func docutils literal"><span class="pre">get_data()</span></code> also provides the meta data for the returned
+spectra as an attribute of that spectra.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="specio.core.format.Reader.get_next_data">
+<code class="descname">get_next_data</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/glemaitre/specio/blob/7ef2be8/pydicom/../../../../../Documents/code/research/lypsis/specio/specio/core/format.py#L251"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#specio.core.format.Reader.get_next_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read the next spectra from the series.</p>
+<p>Some formats may support additional keyword arguments. These are
+listed in the documentation of those formats.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>kwargs: dict</strong></p>
+<blockquote>
+<div><p>Additional arguments which might used by the given format.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>spectrum</strong> : Spectrum</p>
+<blockquote class="last">
+<div><p>A <code class="docutils literal"><span class="pre">Spectrum</span></code> instance containing the data and metadata.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="specio.core.format.Reader.iter_data">
+<code class="descname">iter_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/glemaitre/specio/blob/7ef2be8/pydicom/../../../../../Documents/code/research/lypsis/specio/specio/core/format.py#L299"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#specio.core.format.Reader.iter_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterate over all spectrum in the series.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>None</strong></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>You can also iterate over the reader object.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="specio.core.format.Reader.request">
+<code class="descname">request</code><a class="headerlink" href="#specio.core.format.Reader.request" title="Permalink to this definition">¶</a></dt>
+<dd><p>The <a class="reference internal" href="generated/specio.core.Request.html#specio.core.Request" title="specio.core.Request"><code class="xref py py-class docutils literal"><span class="pre">Request</span></code></a> object corresponding to the
+current read operation.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="formats.html" class="btn btn-neutral float-right" title="Docs for specio formats" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="sec_user.html" class="btn btn-neutral" title="User documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Guillaume Lemaitre.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.0.1.dev0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

@@ -1,0 +1,847 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>specio.core.format &mdash; specio 0.0.1.dev0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/specio.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../_static/gallery.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="specio 0.0.1.dev0 documentation" href="../../../index.html"/>
+        <link rel="up" title="Module code" href="../../index.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> specio
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.1.dev0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../sec_gettingstarted.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sec_user.html">User documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sec_dev.html">Developer documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">specio</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>specio.core.format</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for specio.core.format</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Base class used by the plugin to read a specific format.&quot;&quot;&quot;</span>
+
+<span class="c1"># Copyright (c) 2017</span>
+<span class="c1"># Authors: Guillaume Lemaitre &lt;guillaume.lemaitre@inria.fr&gt;</span>
+<span class="c1"># License: BSD 3 clause</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">warnings</span> <span class="k">import</span> <span class="n">warn</span>
+<span class="kn">from</span> <span class="nn">six</span> <span class="k">import</span> <span class="n">string_types</span>
+
+<span class="kn">from</span> <span class="nn">.exceptions</span> <span class="k">import</span> <span class="n">CannotReadSpectraError</span>
+<span class="kn">from</span> <span class="nn">.util</span> <span class="k">import</span> <span class="n">Spectrum</span>
+
+
+<div class="viewcode-block" id="Format"><a class="viewcode-back" href="../../../generated/specio.core.Format.html#specio.Format">[docs]</a><span class="k">class</span> <span class="nc">Format</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Represents an implementation to read a particular spectrum format.</span>
+
+<span class="sd">    A format instance is responsible for: (i) providing information about a</span>
+<span class="sd">    format, (ii) determining whether a certain file can be read with this</span>
+<span class="sd">    format, and (iii) providing a reader class.</span>
+
+<span class="sd">    Generally, ``specio`` will select the right format and use that to read the</span>
+<span class="sd">    spectrum. A format can also be explicitly chosen in all read function. Use</span>
+<span class="sd">    ``print(format)`` or ``help(format)`` to see its documentation.</span>
+
+<span class="sd">    To implement a specific format, one should create a subclass of ``Format``</span>
+<span class="sd">    and the ``Format.Reader class.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    name : str</span>
+<span class="sd">        A short name of this format. Users can select a format using its name.</span>
+
+<span class="sd">    description : str</span>
+<span class="sd">        A one-line description of the format.</span>
+
+<span class="sd">    extensions : str | list | None</span>
+<span class="sd">        List of filename extensions that this format supports. If a</span>
+<span class="sd">        string is passed it should be space or comma separated. The</span>
+<span class="sd">        extensions are used in the documentation and to allow users to</span>
+<span class="sd">        select a format by file extension. It is not used to determine</span>
+<span class="sd">        what format to use for reading a file.</span>
+
+<span class="sd">    modes : str</span>
+<span class="sd">        A string containing the modes that this format can handle (&#39;sS&#39;),</span>
+<span class="sd">        &#39;s&#39; for a single spectrum, &#39;S&#39; for multiple spectrum.</span>
+<span class="sd">        This attribute is used in the documentation and to select the</span>
+<span class="sd">        formats when reading a file.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Format.__init__"><a class="viewcode-back" href="../../../generated/specio.core.Format.html#specio.Format.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="n">extensions</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">modes</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_description</span> <span class="o">=</span> <span class="n">description</span>
+
+        <span class="c1"># Store extensions, do some effort to normalize them.</span>
+        <span class="c1"># They are stored as a list of lowercase strings without leading dots.</span>
+        <span class="k">if</span> <span class="n">extensions</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">extensions</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">extensions</span><span class="p">,</span> <span class="n">string_types</span><span class="p">):</span>
+            <span class="n">extensions</span> <span class="o">=</span> <span class="n">extensions</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">extensions</span><span class="p">,</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">)):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_extensions</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">([</span><span class="s1">&#39;.&#39;</span> <span class="o">+</span> <span class="n">e</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+                                      <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">extensions</span> <span class="k">if</span> <span class="n">e</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Invalid value for extensions given.&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Store mode</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_modes</span> <span class="o">=</span> <span class="n">modes</span> <span class="ow">or</span> <span class="s1">&#39;&#39;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_modes</span><span class="p">,</span> <span class="n">string_types</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Invalid value for modes given.&#39;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_modes</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">m</span> <span class="ow">not</span> <span class="ow">in</span> <span class="s1">&#39;sS?&#39;</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Invalid value for mode given.&#39;</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;&lt;Format </span><span class="si">%s</span><span class="s1"> - </span><span class="si">%s</span><span class="s1">&gt;&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">description</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">doc</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">doc</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Format documention.&quot;&quot;&quot;</span>
+        <span class="c1"># Our docsring is assumed to be indented by four spaces. The</span>
+        <span class="c1"># first line needs special attention.</span>
+        <span class="k">return</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> - </span><span class="si">%s</span><span class="se">\n\n</span><span class="s1">    </span><span class="si">%s</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">description</span><span class="p">,</span>
+                                        <span class="bp">self</span><span class="o">.</span><span class="vm">__doc__</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Format name.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">description</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Format description.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_description</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">extensions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Format extension.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_extensions</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">modes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Format modes.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_modes</span>
+
+<div class="viewcode-block" id="Format.get_reader"><a class="viewcode-back" href="../../../generated/specio.core.Format.html#specio.Format.get_reader">[docs]</a>    <span class="k">def</span> <span class="nf">get_reader</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a Reader instance.</span>
+
+<span class="sd">        Return a reader object that can be used to read data and info from the</span>
+<span class="sd">        given file. Users are encouraged to use :func:`specio.get_reader`</span>
+<span class="sd">        instead.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        request : Request</span>
+<span class="sd">            The request to read a specific resource.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        reader : Format.Reader</span>
+<span class="sd">            :class:`specio.Reader` instance allowing to read the data.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">select_mode</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">mode</span> <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">mode</span> <span class="ow">in</span> <span class="s1">&#39;sS&#39;</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span>
+        <span class="k">if</span> <span class="n">select_mode</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">modes</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;Format </span><span class="si">%s</span><span class="s1"> cannot read in mode </span><span class="si">%r</span><span class="s1">&#39;</span> <span class="o">%</span>
+                               <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">select_mode</span><span class="p">))</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Reader</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Format.can_read"><a class="viewcode-back" href="../../../generated/specio.core.Format.html#specio.Format.can_read">[docs]</a>    <span class="k">def</span> <span class="nf">can_read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Indicate a spectra resource can be read.</span>
+
+<span class="sd">        Get whether this format can read data from the specified uri.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        request : Request</span>
+<span class="sd">            The request to read a specific resource.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        is_readable : bool</span>
+<span class="sd">            Returns ``True`` if the file can be read and ``False`` otherwise.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_can_read</span><span class="p">(</span><span class="n">request</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_can_read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Implemented by the plugins.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">class</span> <span class="nc">Reader</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Context manager to read the spectra.</span>
+
+<span class="sd">        The purpose of a reader object is to read data from an spectra</span>
+<span class="sd">        resource, and should be obtained by calling :func:`.get_reader`.</span>
+
+<span class="sd">        A reader can be used as an iterator to read multiple images, and (if</span>
+<span class="sd">        the format permits) only reads data from the file when new data is</span>
+<span class="sd">        requested (i.e. streaming). A reader can also be used as a context</span>
+<span class="sd">        manager so that it is automatically closed.</span>
+
+<span class="sd">        Plugins implement Reader&#39;s for different formats. Though rare, plugins</span>
+<span class="sd">        may provide additional functionality (beyond what is provided by the</span>
+<span class="sd">        base reader class).</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        request : Request</span>
+<span class="sd">            The request to read a specific resource.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">format</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__closed</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_BaseReader_last_index</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_format</span> <span class="o">=</span> <span class="nb">format</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_request</span> <span class="o">=</span> <span class="n">request</span>
+            <span class="c1"># Open the reader</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_open</span><span class="p">(</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">kwargs</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span>
+
+        <span class="nd">@property</span>
+        <span class="k">def</span> <span class="nf">format</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot; The :class:`.Format` object corresponding to the current</span>
+<span class="sd">            read/write operation.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_format</span>
+
+        <span class="nd">@property</span>
+        <span class="k">def</span> <span class="nf">request</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot; The :class:`.Request` object corresponding to the</span>
+<span class="sd">            current read operation.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span>
+
+        <span class="k">def</span> <span class="nf">get_length</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;The number of spectrum.</span>
+
+<span class="sd">            Get the number of spectrum in the file.</span>
+
+<span class="sd">            Returns</span>
+<span class="sd">            -------</span>
+<span class="sd">            length : int</span>
+<span class="sd">                The number of spectrum. The result can be:</span>
+
+<span class="sd">                    * 0 for files that only have meta data</span>
+<span class="sd">                    * 1 for singleton spectrum</span>
+<span class="sd">                    * N for spectra series</span>
+
+<span class="sd">            Notes</span>
+<span class="sd">            -----</span>
+<span class="sd">            You can also use ``len(reader_object)``</span>
+
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_length</span><span class="p">()</span>
+
+        <span class="k">def</span> <span class="nf">get_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;Read the data from the file and return a ``Spectrum`` instance.</span>
+
+<span class="sd">            Read data from the file, using the spectrum index. The returned</span>
+<span class="sd">            spectrum has a ``meta`` attribute with the meta data.</span>
+
+<span class="sd">            Some formats may support additional keyword arguments. These are</span>
+<span class="sd">            listed in the documentation of those formats.</span>
+
+<span class="sd">            Parameters</span>
+<span class="sd">            ----------</span>
+<span class="sd">            index : int</span>
+<span class="sd">                The index of the spectra file to read.</span>
+
+<span class="sd">            kwargs: dict</span>
+<span class="sd">                Additional arguments which might used by the given format.</span>
+
+<span class="sd">            Returns</span>
+<span class="sd">            -------</span>
+<span class="sd">            spectrum : Spectrum</span>
+<span class="sd">                A ``Spectrum`` instance containing the data and metadata.</span>
+
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_checkClosed</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_BaseReader_last_index</span> <span class="o">=</span> <span class="n">index</span>
+            <span class="n">spectrum</span><span class="p">,</span> <span class="n">wavelength</span><span class="p">,</span> <span class="n">meta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_data</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">Spectrum</span><span class="p">(</span><span class="n">spectrum</span><span class="p">,</span> <span class="n">wavelength</span><span class="p">,</span> <span class="n">meta</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">get_next_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;Read the next spectra from the series.</span>
+
+<span class="sd">            Some formats may support additional keyword arguments. These are</span>
+<span class="sd">            listed in the documentation of those formats.</span>
+
+<span class="sd">            Parameters</span>
+<span class="sd">            ----------</span>
+<span class="sd">            kwargs: dict</span>
+<span class="sd">                Additional arguments which might used by the given format.</span>
+
+<span class="sd">            Returns</span>
+<span class="sd">            -------</span>
+<span class="sd">            spectrum : Spectrum</span>
+<span class="sd">                A ``Spectrum`` instance containing the data and metadata.</span>
+
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_BaseReader_last_index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">get_meta_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;Read the meta data for a given spectrum.</span>
+
+<span class="sd">            Read meta data from the file. using the spectrum index. If the</span>
+<span class="sd">            index is omitted or None, return the file&#39;s (global) meta data.</span>
+
+<span class="sd">            Parameters</span>
+<span class="sd">            ----------</span>
+<span class="sd">            index : int</span>
+<span class="sd">                The index of the spectra file to read.</span>
+
+<span class="sd">            Returns</span>
+<span class="sd">            -------</span>
+<span class="sd">            meta : dict</span>
+<span class="sd">                A dictionary containing the meta data.</span>
+
+<span class="sd">            Notes</span>
+<span class="sd">            -----</span>
+<span class="sd">            :func:`get_data` also provides the meta data for the returned</span>
+<span class="sd">            spectra as an attribute of that spectra.</span>
+
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_checkClosed</span><span class="p">()</span>
+            <span class="n">meta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_meta_data</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">meta</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Meta data must be a dict, not </span><span class="si">%r</span><span class="s1">&#39;</span> <span class="o">%</span>
+                                 <span class="n">meta</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">meta</span>
+
+        <span class="k">def</span> <span class="nf">iter_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;Iterate over all spectrum in the series.</span>
+
+<span class="sd">            Parameters</span>
+<span class="sd">            ----------</span>
+<span class="sd">            None</span>
+
+<span class="sd">            Returns</span>
+<span class="sd">            -------</span>
+<span class="sd">            None</span>
+
+<span class="sd">            Notes</span>
+<span class="sd">            -----</span>
+<span class="sd">            You can also iterate over the reader object.</span>
+
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_checkClosed</span><span class="p">()</span>
+            <span class="n">i</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_length</span><span class="p">()</span>
+            <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">spectrum</span><span class="p">,</span> <span class="n">wavelength</span><span class="p">,</span> <span class="n">meta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_data</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+                <span class="k">except</span> <span class="p">(</span><span class="ne">IndexError</span><span class="p">,</span> <span class="n">CannotReadSpectraError</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">n</span> <span class="o">-</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                        <span class="n">uri</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">filename</span>
+                        <span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Could not read last frame of </span><span class="si">%s</span><span class="s1">.&#39;</span> <span class="o">%</span> <span class="n">uri</span><span class="p">)</span>
+                        <span class="k">return</span>
+                    <span class="k">raise</span>
+                <span class="k">yield</span> <span class="n">Spectrum</span><span class="p">(</span><span class="n">spectrum</span><span class="p">,</span> <span class="n">wavelength</span><span class="p">,</span> <span class="n">meta</span><span class="p">)</span>
+                <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="c1"># Compatibility</span>
+
+        <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">iter_data</span><span class="p">()</span>
+
+        <span class="k">def</span> <span class="nf">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_length</span><span class="p">()</span>
+
+        <span class="k">def</span> <span class="nf">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_checkClosed</span><span class="p">()</span>
+            <span class="k">return</span> <span class="bp">self</span>
+
+        <span class="k">def</span> <span class="nf">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="c1"># Otherwise error in close hide the real error.</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+        <span class="k">def</span> <span class="nf">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                <span class="k">pass</span>  <span class="c1"># Remove noise when called during interpreter shutdown</span>
+
+        <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;Flush and close the reader.</span>
+
+<span class="sd">            This method has no effect if it is already closed.</span>
+
+<span class="sd">            Parameters</span>
+<span class="sd">            ----------</span>
+<span class="sd">            None</span>
+
+<span class="sd">            Returns</span>
+<span class="sd">            -------</span>
+<span class="sd">            None</span>
+
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__closed</span><span class="p">:</span>
+                <span class="k">return</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__closed</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_close</span><span class="p">()</span>
+            <span class="c1"># Process results and clean request object</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">_finish</span><span class="p">()</span>
+
+        <span class="nd">@property</span>
+        <span class="k">def</span> <span class="nf">closed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__closed</span>
+
+        <span class="k">def</span> <span class="nf">_checkClosed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">closed</span><span class="p">:</span>
+                <span class="n">what</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="n">msg</span> <span class="ow">or</span> <span class="p">(</span><span class="s2">&quot;I/O operation on closed </span><span class="si">%s</span><span class="s2">.&quot;</span> <span class="o">%</span> <span class="n">what</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="c1"># To implement</span>
+
+        <span class="k">def</span> <span class="nf">_open</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;Plugins should probably implement this.</span>
+
+<span class="sd">            It is called when reader is created. Here the plugin can do its</span>
+<span class="sd">            initialization. The given keyword arguments are those that were</span>
+<span class="sd">            given by the user at specio.read().</span>
+
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+
+        <span class="k">def</span> <span class="nf">_close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;Plugins should probably implement this.</span>
+
+<span class="sd">            It is called when the reader is closed. Here the plugin can do a</span>
+<span class="sd">            cleanup, flush, etc.</span>
+
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+
+        <span class="k">def</span> <span class="nf">_get_length</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;Plugins must implement this.</span>
+
+<span class="sd">            The returned scalar specifies the number of spectra in the series.</span>
+<span class="sd">            See Reader.get_length for more information.</span>
+
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+
+        <span class="k">def</span> <span class="nf">_get_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;Plugins must implement this, but may raise an IndexError in</span>
+<span class="sd">            case the plugin does not support random access.</span>
+
+<span class="sd">            It should return the spectra and meta data: (ndarray, dict).</span>
+
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+
+        <span class="k">def</span> <span class="nf">_get_meta_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;Plugins must implement this.</span>
+
+<span class="sd">            It should return the meta data as a dict, corresponding to the</span>
+<span class="sd">            given index, or to the file&#39;s (global) meta data if index is None.</span>
+
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="FormatManager"><a class="viewcode-back" href="../../../generated/specio.core.FormatManager.html#specio.FormatManager">[docs]</a><span class="k">class</span> <span class="nc">FormatManager</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Format manager containing all the registered formats.</span>
+
+<span class="sd">    There is exactly one FormatManager object in specio: ``specio.formats``.</span>
+<span class="sd">    Its purpose it to keep track of the registered formats.</span>
+
+<span class="sd">    The format manager supports getting a format object using indexing (by</span>
+<span class="sd">    format name or extension). When used as an iterator, this object yields all</span>
+<span class="sd">    registered format objects.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="FormatManager.__init__"><a class="viewcode-back" href="../../../generated/specio.core.FormatManager.html#specio.FormatManager.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_formats</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_formats_sorted</span> <span class="o">=</span> <span class="p">[]</span></div>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;&lt;specio.FormatManager with </span><span class="si">%i</span><span class="s1"> registered formats&gt;&#39;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_formats_sorted</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_formats</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">ss</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="nb">format</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
+            <span class="n">ext</span> <span class="o">=</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">format</span><span class="o">.</span><span class="n">extensions</span><span class="p">)</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> - </span><span class="si">%s</span><span class="s1"> [</span><span class="si">%s</span><span class="s1">]&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">format</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="nb">format</span><span class="o">.</span><span class="n">description</span><span class="p">,</span> <span class="n">ext</span><span class="p">)</span>
+            <span class="n">ss</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ss</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="c1"># Check</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">string_types</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Looking up a format should be done by name &#39;</span>
+                             <span class="s1">&#39;or by extension.&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">name</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;No format matches the empty string.&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Test if name is existing file</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+            <span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">Request</span>
+            <span class="nb">format</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">search_read_format</span><span class="p">(</span><span class="n">Request</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;?&#39;</span><span class="p">))</span>
+            <span class="k">if</span> <span class="nb">format</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span> <span class="nb">format</span>
+
+        <span class="k">if</span> <span class="s1">&#39;.&#39;</span> <span class="ow">in</span> <span class="n">name</span><span class="p">:</span>
+            <span class="c1"># Look for extension</span>
+            <span class="n">e1</span><span class="p">,</span> <span class="n">e2</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">e2</span> <span class="ow">or</span> <span class="n">e1</span>
+            <span class="c1"># Search for format that supports this extension</span>
+            <span class="k">for</span> <span class="nb">format</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">format</span><span class="o">.</span><span class="n">extensions</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="nb">format</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Look for name</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+            <span class="k">for</span> <span class="nb">format</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="nb">format</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="nb">format</span>
+            <span class="k">for</span> <span class="nb">format</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="nb">format</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">rsplit</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]:</span>
+                    <span class="k">return</span> <span class="nb">format</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># Maybe the user meant to specify an extension</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="p">[</span><span class="s1">&#39;.&#39;</span> <span class="o">+</span> <span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span>
+
+        <span class="c1"># Nothing found ...</span>
+        <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span><span class="s1">&#39;No format known by name </span><span class="si">%s</span><span class="s1">.&#39;</span> <span class="o">%</span> <span class="n">name</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_sorter</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="k">return</span> <span class="o">-</span> <span class="p">((</span><span class="n">val</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">name</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">val</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">name</span><span class="p">)))</span>
+
+<div class="viewcode-block" id="FormatManager.sort"><a class="viewcode-back" href="../../../generated/specio.core.FormatManager.html#specio.FormatManager.sort">[docs]</a>    <span class="k">def</span> <span class="nf">sort</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">names</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Sort the registered format.</span>
+
+<span class="sd">        Sort the formats based on zero or more given names; a format with a</span>
+<span class="sd">        name that matches one of the given names will take precedence over</span>
+<span class="sd">        other formats. A match means an equal name, or ending with that name</span>
+<span class="sd">        (though the former counts higher). Case insensitive.</span>
+
+<span class="sd">        Be aware that using the function can affect the behavior of other code</span>
+<span class="sd">        that makes use of specio.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        names : list of str</span>
+<span class="sd">            Sequence of format name which need to be sorted.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Check and sanitize input</span>
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">names</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">string_types</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;formats.sort() accepts only string names.&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">c</span> <span class="ow">in</span> <span class="n">name</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="s1">&#39;.,&#39;</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Names given to formats.sort() should not &#39;</span>
+                                 <span class="s1">&#39;contain dots or commas.&#39;</span><span class="p">)</span>
+        <span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="n">name</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">names</span><span class="p">]</span>
+        <span class="c1"># Reset</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_formats_sorted</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_formats</span><span class="p">)</span>
+        <span class="c1"># Sort</span>
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="n">names</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_formats_sorted</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span>
+                <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">f</span><span class="p">:</span> <span class="o">-</span> <span class="p">((</span><span class="n">f</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">name</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">name</span><span class="p">))))</span></div>
+
+<div class="viewcode-block" id="FormatManager.add_format"><a class="viewcode-back" href="../../../generated/specio.core.FormatManager.html#specio.FormatManager.add_format">[docs]</a>    <span class="k">def</span> <span class="nf">add_format</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">format</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Register a given format.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        format : specio.Format</span>
+<span class="sd">            The format to be registered.</span>
+
+<span class="sd">        overwrite : bool, (default=False)</span>
+<span class="sd">            If False, a format with the same name will raise an error. If True,</span>
+<span class="sd">            it will replace it.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">format</span><span class="p">,</span> <span class="n">Format</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;add_format needs argument to be a Format object&#39;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">format</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_formats</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Given Format instance is already registered&#39;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">format</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_format_names</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">overwrite</span><span class="p">:</span>
+                <span class="n">old_format</span> <span class="o">=</span> <span class="bp">self</span><span class="p">[</span><span class="nb">format</span><span class="o">.</span><span class="n">name</span><span class="p">]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_formats</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">old_format</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">old_format</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_formats_sorted</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_formats_sorted</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">old_format</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;A Format named </span><span class="si">%r</span><span class="s1"> is already registered, use&#39;</span>
+                                 <span class="s1">&#39; overwrite=True to replace.&#39;</span> <span class="o">%</span> <span class="nb">format</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_formats</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">format</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_formats_sorted</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">format</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="FormatManager.search_read_format"><a class="viewcode-back" href="../../../generated/specio.core.FormatManager.html#specio.FormatManager.search_read_format">[docs]</a>    <span class="k">def</span> <span class="nf">search_read_format</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Search a specific format.</span>
+
+<span class="sd">        Search a format that can read a file according to the given request.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        request : specio.Request</span>
+<span class="sd">            The request to read a specific resource.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        format : specio.Format or None</span>
+<span class="sd">            Returns the specio.Format found or None if no appropriate</span>
+<span class="sd">            format was found.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">select_mode</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">mode</span> <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">mode</span> <span class="ow">in</span> <span class="s1">&#39;sS&#39;</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span>
+        <span class="n">select_ext</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">filename</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+
+        <span class="c1"># Select formats that seem to be able to read it</span>
+        <span class="n">selected_formats</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="nb">format</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">select_mode</span> <span class="ow">in</span> <span class="nb">format</span><span class="o">.</span><span class="n">modes</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">select_ext</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="nb">format</span><span class="o">.</span><span class="n">extensions</span><span class="p">):</span>
+                    <span class="n">selected_formats</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">format</span><span class="p">)</span>
+
+        <span class="c1"># Select the first that can</span>
+        <span class="k">for</span> <span class="nb">format</span> <span class="ow">in</span> <span class="n">selected_formats</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">format</span><span class="o">.</span><span class="n">can_read</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+                <span class="k">return</span> <span class="nb">format</span>
+
+        <span class="c1"># If no format could read it, it could be that file has no or</span>
+        <span class="c1"># the wrong extension. We ask all formats again.</span>
+        <span class="k">for</span> <span class="nb">format</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">format</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">selected_formats</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">format</span><span class="o">.</span><span class="n">can_read</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+                    <span class="k">return</span> <span class="nb">format</span></div>
+
+<div class="viewcode-block" id="FormatManager.get_format_names"><a class="viewcode-back" href="../../../generated/specio.core.FormatManager.html#specio.FormatManager.get_format_names">[docs]</a>    <span class="k">def</span> <span class="nf">get_format_names</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the names of all registered formats.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">f</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="FormatManager.show"><a class="viewcode-back" href="../../../generated/specio.core.FormatManager.html#specio.FormatManager.show">[docs]</a>    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Show a nicely formatted list of available formats.&quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Guillaume Lemaitre.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'0.0.1.dev0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

@@ -1,0 +1,497 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>specio.core.request &mdash; specio 0.0.1.dev0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/specio.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../_static/gallery.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="specio 0.0.1.dev0 documentation" href="../../../index.html"/>
+        <link rel="up" title="Module code" href="../../index.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> specio
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.1.dev0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../sec_gettingstarted.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sec_user.html">User documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sec_dev.html">Developer documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">specio</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>specio.core.request</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for specio.core.request</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Interface plugin resource&quot;&quot;&quot;</span>
+
+<span class="c1"># Copyright (c) 2017</span>
+<span class="c1"># Authors: Guillaume Lemaitre &lt;guillaume.lemaitre@inria.fr&gt;</span>
+<span class="c1"># License: BSD 3 clause</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">six</span> <span class="k">import</span> <span class="n">string_types</span><span class="p">,</span> <span class="n">binary_type</span>
+
+<span class="n">URI_FILE</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">URI_FILENAME</span> <span class="o">=</span> <span class="mi">3</span>
+
+
+<div class="viewcode-block" id="Request"><a class="viewcode-back" href="../../../generated/specio.core.Request.html#specio.core.Request">[docs]</a><span class="k">class</span> <span class="nc">Request</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Interface between a plugin and the spectra resource.</span>
+
+<span class="sd">    Represents a request for reading an spectra resource. This object wraps</span>
+<span class="sd">    information to that request and acts as an interface for the plugins to</span>
+<span class="sd">    several resources; it allows the user to read from filenames, files but</span>
+<span class="sd">    offer a simple interface to the plugins via :func:`get_file` and</span>
+<span class="sd">    :func:`specio.get_local_filename`.</span>
+
+<span class="sd">    For each read operation a single Request instance is used and passed to the</span>
+<span class="sd">    can_read method of a format, and subsequently to the Reader class. This</span>
+<span class="sd">    allows rudimentary passing of information between different formats and</span>
+<span class="sd">    between a format and associated reader.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    uri : {str, file}</span>
+<span class="sd">        The resource to load the image from.</span>
+
+<span class="sd">    mode : str</span>
+<span class="sd">        This character is used to indicate the kind of data:</span>
+<span class="sd">        &quot;s&quot; for a spectrum, &quot;S&quot; for multiple spectra, &quot;?&quot; for don&#39;t care.</span>
+
+<span class="sd">    kwargs : dict</span>
+<span class="sd">        Keywords to pass to the plugin.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    filename : str</span>
+<span class="sd">        The filename of the file to be read.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Request.__init__"><a class="viewcode-back" href="../../../generated/specio.core.Request.html#specio.core.Request.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">uri</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+        <span class="c1"># General</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_uri_type</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_filename</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_kwargs</span> <span class="o">=</span> <span class="n">kwargs</span>
+
+        <span class="c1"># To handle the user-side</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_bytes</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Incoming bytes</span>
+
+        <span class="c1"># To handle the plugin side</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_file</span> <span class="o">=</span> <span class="kc">None</span>               <span class="c1"># To store the file instance</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_firstbytes</span> <span class="o">=</span> <span class="kc">None</span>         <span class="c1"># For easy header parsing</span>
+
+        <span class="c1"># To store formats that may be able to fulfil this request</span>
+        <span class="c1"># self._potential_formats = []</span>
+
+        <span class="c1"># Check mode</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_mode</span> <span class="o">=</span> <span class="n">mode</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mode</span><span class="p">,</span> <span class="n">string_types</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Request requires mode must be a string&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">mode</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Request requires mode to have one char&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">mode</span> <span class="ow">not</span> <span class="ow">in</span> <span class="s1">&#39;sS?&#39;</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Request requires mode to be in &quot;sS?&quot;&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Parse what was given</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_parse_uri</span><span class="p">(</span><span class="n">uri</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_parse_uri</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">uri</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Try to figure our what we were given.&quot;&quot;&quot;</span>
+        <span class="n">py3k</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">3</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">uri</span><span class="p">,</span> <span class="n">string_types</span><span class="p">):</span>
+            <span class="c1"># Explicit</span>
+            <span class="k">if</span> <span class="n">uri</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;file://&#39;</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_uri_type</span> <span class="o">=</span> <span class="n">URI_FILENAME</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_filename</span> <span class="o">=</span> <span class="n">uri</span><span class="p">[</span><span class="mi">7</span><span class="p">:]</span>
+            <span class="c1"># Less explicit (particularly on py 2.x)</span>
+            <span class="k">elif</span> <span class="n">py3k</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_uri_type</span> <span class="o">=</span> <span class="n">URI_FILENAME</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_filename</span> <span class="o">=</span> <span class="n">uri</span>
+            <span class="k">else</span><span class="p">:</span>  <span class="c1"># pragma: no cover - our ref for coverage is py3k</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">isfile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">uri</span><span class="p">)</span>
+                <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                    <span class="n">isfile</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1"># If checking does not even work ...</span>
+                <span class="k">if</span> <span class="n">isfile</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_uri_type</span> <span class="o">=</span> <span class="n">URI_FILENAME</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_filename</span> <span class="o">=</span> <span class="n">uri</span>
+                <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">uri</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">256</span><span class="p">:</span>  <span class="c1"># Can go wrong with veeery tiny images</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_uri_type</span> <span class="o">=</span> <span class="n">URI_FILENAME</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_filename</span> <span class="o">=</span> <span class="n">uri</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_uri_type</span> <span class="o">=</span> <span class="n">URI_FILENAME</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_filename</span> <span class="o">=</span> <span class="n">uri</span>
+        <span class="c1"># Files</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">uri</span><span class="p">,</span> <span class="s1">&#39;read&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">uri</span><span class="p">,</span> <span class="s1">&#39;close&#39;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_uri_type</span> <span class="o">=</span> <span class="n">URI_FILE</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_filename</span> <span class="o">=</span> <span class="s1">&#39;&lt;file&gt;&#39;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_file</span> <span class="o">=</span> <span class="n">uri</span>
+
+        <span class="c1"># Expand user dir</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_uri_type</span> <span class="o">==</span> <span class="n">URI_FILENAME</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_filename</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;~&#39;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_filename</span><span class="p">)</span>
+
+        <span class="c1"># Check if we could read it</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_uri_type</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">uri_r</span> <span class="o">=</span> <span class="nb">repr</span><span class="p">(</span><span class="n">uri</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">uri_r</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">60</span><span class="p">:</span>
+                <span class="n">uri_r</span> <span class="o">=</span> <span class="n">uri_r</span><span class="p">[:</span><span class="mi">57</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;...&#39;</span>
+            <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Cannot understand given URI: </span><span class="si">%s</span><span class="s2">.&quot;</span> <span class="o">%</span> <span class="n">uri_r</span><span class="p">)</span>
+
+        <span class="c1"># Make filename absolute</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_uri_type</span> <span class="o">==</span> <span class="n">URI_FILENAME</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_filename</span><span class="p">)</span>
+
+        <span class="c1"># Check whether file name is valid</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_uri_type</span> <span class="o">==</span> <span class="n">URI_FILENAME</span><span class="p">:</span>
+            <span class="n">fn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_filename</span>
+            <span class="c1"># Reading: check that the file exists (but is allowed a dir)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">fn</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;No such file: &#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span> <span class="o">%</span> <span class="n">fn</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">filename</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Filename of the resource.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_filename</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">mode</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Mode of the request.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mode</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">kwargs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Keywords required to read the file.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_kwargs</span>
+
+    <span class="c1"># For obtaining data</span>
+
+<div class="viewcode-block" id="Request.get_file"><a class="viewcode-back" href="../../../generated/specio.core.Request.html#specio.core.Request.get_file">[docs]</a>    <span class="k">def</span> <span class="nf">get_file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get a file object for the resource.</span>
+
+<span class="sd">        Get a file object for the resource associated with this request. Read</span>
+<span class="sd">        the file in read mode. This method is not thread safe. Plugins do not</span>
+<span class="sd">        need to close the file when done.</span>
+
+<span class="sd">        This is the preferred way to read the data. But if a format cannot</span>
+<span class="sd">        handle file-like objects, they should use ``get_local_filename()``.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        file : file object</span>
+<span class="sd">            The file object associated with the resource.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Is there already a file?</span>
+        <span class="c1"># Either _uri_type == URI_FILE, or we already opened the file,</span>
+        <span class="c1"># e.g. by using firstbytes</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_file</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_file</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_uri_type</span> <span class="o">==</span> <span class="n">URI_FILENAME</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_file</span></div>
+
+<div class="viewcode-block" id="Request.get_local_filename"><a class="viewcode-back" href="../../../generated/specio.core.Request.html#specio.core.Request.get_local_filename">[docs]</a>    <span class="k">def</span> <span class="nf">get_local_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the filename of the resource.</span>
+
+<span class="sd">        If the filename is an existing file on this filesystem, return</span>
+<span class="sd">        that.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        filename : str</span>
+<span class="sd">            The filename associated with the resource.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_uri_type</span> <span class="o">==</span> <span class="n">URI_FILENAME</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_filename</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_uri_type</span> <span class="o">==</span> <span class="n">URI_FILE</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_file</span><span class="o">.</span><span class="n">name</span></div>
+
+    <span class="k">def</span> <span class="nf">_finish</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;For internal use (called when the context of the reader</span>
+<span class="sd">        exits). Finishes this request. Close open files and process results.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Close open files that we know of (and are responsible for)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_file</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_uri_type</span> <span class="o">!=</span> <span class="n">URI_FILE</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_file</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1"># Detach so gc can clean even if a reference of self lingers</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_bytes</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">firstbytes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The first 256 bytes of the file. These can be used to parse the</span>
+<span class="sd">        header to determine the file-format.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_firstbytes</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_read_first_bytes</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_firstbytes</span>
+
+    <span class="k">def</span> <span class="nf">_read_first_bytes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="mi">256</span><span class="p">):</span>
+        <span class="c1"># Prepare</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_file</span><span class="p">()</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">i</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">tell</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="n">i</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1"># Read</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_firstbytes</span> <span class="o">=</span> <span class="n">read_n_bytes</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
+        <span class="c1"># Set back</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;cannot seek with None&#39;</span><span class="p">)</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="c1"># Prevent get_file() from reusing the file</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_file</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="c1"># If the given URI was a file object, we have a problem,</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_uri_type</span> <span class="o">==</span> <span class="n">URI_FILE</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s1">&#39;Cannot seek back after getting firstbytes!&#39;</span><span class="p">)</span></div>
+
+
+<span class="k">def</span> <span class="nf">read_n_bytes</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">N</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Read the N first bytes of a file object.</span>
+
+<span class="sd">    Read n bytes from the given file, or less if the file has less</span>
+<span class="sd">    bytes. Returns zero bytes if the file is closed.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    f : file object</span>
+<span class="sd">        The file object to read.</span>
+
+<span class="sd">    N : int</span>
+<span class="sd">        The number of byte to read.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    bb : binary_type</span>
+<span class="sd">        The N first bytes.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">bb</span> <span class="o">=</span> <span class="n">binary_type</span><span class="p">()</span>
+    <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">bb</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">N</span><span class="p">:</span>
+        <span class="n">extra_bytes</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">N</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">bb</span><span class="p">))</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">extra_bytes</span><span class="p">:</span>
+            <span class="k">break</span>
+        <span class="n">bb</span> <span class="o">+=</span> <span class="n">extra_bytes</span>
+    <span class="k">return</span> <span class="n">bb</span>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Guillaume Lemaitre.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'0.0.1.dev0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

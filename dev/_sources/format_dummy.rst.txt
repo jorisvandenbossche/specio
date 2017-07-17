@@ -1,0 +1,25 @@
+:orphan:
+
+.. _DUMMY:
+
+DUMMY An example format that does nothing.
+==========================================
+
+Extensions: ``.foobar``, ``.nonexistentext``
+
+The dummy format is an example format that does nothing.
+It will never indicate that it can read a file. When
+explicitly asked to read, it will simply read the bytes.
+
+This documentation is shown when the user does ``help('thisformat')``.
+
+Parameters
+----------
+Specify arguments in numpy doc style here.
+
+Attributes
+----------
+Specify the specific attributes that can be useful.
+
+
+

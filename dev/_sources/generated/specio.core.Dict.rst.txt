@@ -1,0 +1,33 @@
+specio\.core\.Dict
+==================
+
+.. currentmodule:: specio.core
+
+.. autoclass:: Dict
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~Dict.clear
+      ~Dict.copy
+      ~Dict.fromkeys
+      ~Dict.get
+      ~Dict.items
+      ~Dict.keys
+      ~Dict.move_to_end
+      ~Dict.pop
+      ~Dict.popitem
+      ~Dict.setdefault
+      ~Dict.update
+      ~Dict.values
+   
+   
+
+   
+   
+   

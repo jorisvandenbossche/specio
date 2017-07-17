@@ -1,0 +1,284 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Specio’s developer API &mdash; specio 0.0.1.dev0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/specio.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="_static/gallery.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="specio 0.0.1.dev0 documentation" href="index.html"/>
+        <link rel="up" title="Developer documentation" href="sec_dev.html"/>
+        <link rel="next" title="specio.core.Format" href="generated/specio.core.Format.html"/>
+        <link rel="prev" title="Developer documentation" href="sec_dev.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> specio
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.1.dev0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="sec_gettingstarted.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sec_user.html">User documentation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="sec_dev.html">Developer documentation</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Developer API</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="generated/specio.core.Format.html">specio.core.Format</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/specio.core.FormatManager.html">specio.core.FormatManager</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/specio.core.Request.html">specio.core.Request</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/specio.core.Dict.html">specio.core.Dict</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/specio.core.Spectrum.html">specio.core.Spectrum</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/specio.core.CannotReadSpectraError.html">specio.core.CannotReadSpectraError</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="plugins.html">Writing plugins</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">specio</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="sec_dev.html">Developer documentation</a> &raquo;</li>
+        
+      <li>Specio&#8217;s developer API</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/devapi.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="specio-s-developer-api">
+<h1>Specio&#8217;s developer API<a class="headerlink" href="#specio-s-developer-api" title="Permalink to this headline">¶</a></h1>
+<p>This page lists the developer documentation for specio. Normal users
+will generally not need this, except perhaps the <a class="reference internal" href="generated/specio.core.Format.html#specio.core.Format" title="specio.core.Format"><code class="xref py py-class docutils literal"><span class="pre">Format</span></code></a> class.
+All these functions and classes are available in the <code class="docutils literal"><span class="pre">specio.core</span></code>
+namespace.</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="generated/specio.core.Format.html#specio.core.Format" title="specio.core.Format"><code class="xref py py-obj docutils literal"><span class="pre">Format</span></code></a>(name,&nbsp;description[,&nbsp;extensions,&nbsp;modes])</td>
+<td>Represents an implementation to read a particular spectrum format.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/specio.core.FormatManager.html#specio.core.FormatManager" title="specio.core.FormatManager"><code class="xref py py-obj docutils literal"><span class="pre">FormatManager</span></code></a>()</td>
+<td>Format manager containing all the registered formats.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/specio.core.Request.html#specio.core.Request" title="specio.core.Request"><code class="xref py py-obj docutils literal"><span class="pre">Request</span></code></a>(uri,&nbsp;mode,&nbsp;**kwargs)</td>
+<td>Interface between a plugin and the spectra resource.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/specio.core.Dict.html#specio.core.Dict" title="specio.core.Dict"><code class="xref py py-obj docutils literal"><span class="pre">Dict</span></code></a></td>
+<td>A dict in which the keys can be get and set as if they were attributes.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/specio.core.Spectrum.html#specio.core.Spectrum" title="specio.core.Spectrum"><code class="xref py py-obj docutils literal"><span class="pre">Spectrum</span></code></a>(spectrum,&nbsp;wavelength[,&nbsp;meta])</td>
+<td>Class containing the spectrum information.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/specio.core.CannotReadSpectraError.html#specio.core.CannotReadSpectraError" title="specio.core.CannotReadSpectraError"><code class="xref py py-obj docutils literal"><span class="pre">CannotReadSpectraError</span></code></a></td>
+<td>Exception to be used by plugins to indicate that a spectra could not be read, even though it should be a valid index.</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="generated/specio.core.Format.html" class="btn btn-neutral float-right" title="specio.core.Format" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="sec_dev.html" class="btn btn-neutral" title="Developer documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Guillaume Lemaitre.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.0.1.dev0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

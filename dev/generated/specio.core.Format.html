@@ -1,0 +1,433 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>specio.core.Format &mdash; specio 0.0.1.dev0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/specio.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="specio 0.0.1.dev0 documentation" href="../index.html"/>
+        <link rel="up" title="Specio’s developer API" href="../devapi.html"/>
+        <link rel="next" title="specio.core.FormatManager" href="specio.core.FormatManager.html"/>
+        <link rel="prev" title="Specio’s developer API" href="../devapi.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> specio
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.1.dev0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../sec_gettingstarted.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sec_user.html">User documentation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../sec_dev.html">Developer documentation</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../devapi.html">Developer API</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">specio.core.Format</a></li>
+<li class="toctree-l3"><a class="reference internal" href="specio.core.FormatManager.html">specio.core.FormatManager</a></li>
+<li class="toctree-l3"><a class="reference internal" href="specio.core.Request.html">specio.core.Request</a></li>
+<li class="toctree-l3"><a class="reference internal" href="specio.core.Dict.html">specio.core.Dict</a></li>
+<li class="toctree-l3"><a class="reference internal" href="specio.core.Spectrum.html">specio.core.Spectrum</a></li>
+<li class="toctree-l3"><a class="reference internal" href="specio.core.CannotReadSpectraError.html">specio.core.CannotReadSpectraError</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins.html">Writing plugins</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">specio</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../sec_dev.html">Developer documentation</a> &raquo;</li>
+        
+          <li><a href="../devapi.html">Specio&#8217;s developer API</a> &raquo;</li>
+        
+      <li>specio.core.Format</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/generated/specio.core.Format.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="specio-core-format">
+<h1>specio.core.Format<a class="headerlink" href="#specio-core-format" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="specio.core.Format">
+<em class="property">class </em><code class="descclassname">specio.core.</code><code class="descname">Format</code><span class="sig-paren">(</span><em>name</em>, <em>description</em>, <em>extensions=None</em>, <em>modes=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/specio/core/format.html#Format"><span class="viewcode-link">[source]</span></a><a class="reference external" href="https://github.com/glemaitre/specio/blob/7ef2be8/pydicom/../../../../../Documents/code/research/lypsis/specio/specio/core/format.py#L17"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#specio.core.Format" title="Permalink to this definition">¶</a></dt>
+<dd><p>Represents an implementation to read a particular spectrum format.</p>
+<p>A format instance is responsible for: (i) providing information about a
+format, (ii) determining whether a certain file can be read with this
+format, and (iii) providing a reader class.</p>
+<p>Generally, <code class="docutils literal"><span class="pre">specio</span></code> will select the right format and use that to read the
+spectrum. A format can also be explicitly chosen in all read function. Use
+<code class="docutils literal"><span class="pre">print(format)</span></code> or <code class="docutils literal"><span class="pre">help(format)</span></code> to see its documentation.</p>
+<p>To implement a specific format, one should create a subclass of <code class="docutils literal"><span class="pre">Format</span></code>
+and the <a href="#id1"><span class="problematic" id="id2">``</span></a>Format.Reader class.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>name</strong> : str</p>
+<blockquote>
+<div><p>A short name of this format. Users can select a format using its name.</p>
+</div></blockquote>
+<p><strong>description</strong> : str</p>
+<blockquote>
+<div><p>A one-line description of the format.</p>
+</div></blockquote>
+<p><strong>extensions</strong> : str | list | None</p>
+<blockquote>
+<div><p>List of filename extensions that this format supports. If a
+string is passed it should be space or comma separated. The
+extensions are used in the documentation and to allow users to
+select a format by file extension. It is not used to determine
+what format to use for reading a file.</p>
+</div></blockquote>
+<p><strong>modes</strong> : str</p>
+<blockquote class="last">
+<div><p>A string containing the modes that this format can handle (&#8216;sS&#8217;),
+&#8216;s&#8217; for a single spectrum, &#8216;S&#8217; for multiple spectrum.
+This attribute is used in the documentation and to select the
+formats when reading a file.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="specio.core.Format.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>name</em>, <em>description</em>, <em>extensions=None</em>, <em>modes=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/specio/core/format.html#Format.__init__"><span class="viewcode-link">[source]</span></a><a class="reference external" href="https://github.com/glemaitre/specio/blob/7ef2be8/pydicom/../../../../../Documents/code/research/lypsis/specio/specio/core/format.py#L53"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#specio.core.Format.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#specio.core.Format.__init__" title="specio.core.Format.__init__"><code class="xref py py-obj docutils literal"><span class="pre">__init__</span></code></a>(name,&nbsp;description[,&nbsp;extensions,&nbsp;modes])</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#specio.core.Format.can_read" title="specio.core.Format.can_read"><code class="xref py py-obj docutils literal"><span class="pre">can_read</span></code></a>(request)</td>
+<td>Indicate a spectra resource can be read.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#specio.core.Format.get_reader" title="specio.core.Format.get_reader"><code class="xref py py-obj docutils literal"><span class="pre">get_reader</span></code></a>(request)</td>
+<td>Return a Reader instance.</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">Reader</span></code></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#specio.core.Format.description" title="specio.core.Format.description"><code class="xref py py-obj docutils literal"><span class="pre">description</span></code></a></td>
+<td>Format description.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#specio.core.Format.doc" title="specio.core.Format.doc"><code class="xref py py-obj docutils literal"><span class="pre">doc</span></code></a></td>
+<td>Format documention.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#specio.core.Format.extensions" title="specio.core.Format.extensions"><code class="xref py py-obj docutils literal"><span class="pre">extensions</span></code></a></td>
+<td>Format extension.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#specio.core.Format.modes" title="specio.core.Format.modes"><code class="xref py py-obj docutils literal"><span class="pre">modes</span></code></a></td>
+<td>Format modes.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#specio.core.Format.name" title="specio.core.Format.name"><code class="xref py py-obj docutils literal"><span class="pre">name</span></code></a></td>
+<td>Format name.</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="specio.core.Format.can_read">
+<code class="descname">can_read</code><span class="sig-paren">(</span><em>request</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/specio/core/format.html#Format.can_read"><span class="viewcode-link">[source]</span></a><a class="reference external" href="https://github.com/glemaitre/specio/blob/7ef2be8/pydicom/../../../../../Documents/code/research/lypsis/specio/specio/core/format.py#L136"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#specio.core.Format.can_read" title="Permalink to this definition">¶</a></dt>
+<dd><p>Indicate a spectra resource can be read.</p>
+<p>Get whether this format can read data from the specified uri.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>request</strong> : Request</p>
+<blockquote>
+<div><p>The request to read a specific resource.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>is_readable</strong> : bool</p>
+<blockquote class="last">
+<div><p>Returns <code class="docutils literal"><span class="pre">True</span></code> if the file can be read and <code class="docutils literal"><span class="pre">False</span></code> otherwise.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="specio.core.Format.description">
+<code class="descname">description</code><a class="headerlink" href="#specio.core.Format.description" title="Permalink to this definition">¶</a></dt>
+<dd><p>Format description.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="specio.core.Format.doc">
+<code class="descname">doc</code><a class="headerlink" href="#specio.core.Format.doc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Format documention.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="specio.core.Format.extensions">
+<code class="descname">extensions</code><a class="headerlink" href="#specio.core.Format.extensions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Format extension.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="specio.core.Format.get_reader">
+<code class="descname">get_reader</code><span class="sig-paren">(</span><em>request</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/specio/core/format.html#Format.get_reader"><span class="viewcode-link">[source]</span></a><a class="reference external" href="https://github.com/glemaitre/specio/blob/7ef2be8/pydicom/../../../../../Documents/code/research/lypsis/specio/specio/core/format.py#L112"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#specio.core.Format.get_reader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a Reader instance.</p>
+<p>Return a reader object that can be used to read data and info from the
+given file. Users are encouraged to use <a class="reference internal" href="../api.html#specio.get_reader" title="specio.get_reader"><code class="xref py py-func docutils literal"><span class="pre">specio.get_reader()</span></code></a>
+instead.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>request</strong> : Request</p>
+<blockquote>
+<div><p>The request to read a specific resource.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>reader</strong> : Format.Reader</p>
+<blockquote class="last">
+<div><p><code class="xref py py-class docutils literal"><span class="pre">specio.Reader</span></code> instance allowing to read the data.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="specio.core.Format.modes">
+<code class="descname">modes</code><a class="headerlink" href="#specio.core.Format.modes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Format modes.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="specio.core.Format.name">
+<code class="descname">name</code><a class="headerlink" href="#specio.core.Format.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Format name.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="specio.core.FormatManager.html" class="btn btn-neutral float-right" title="specio.core.FormatManager" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../devapi.html" class="btn btn-neutral" title="Specio’s developer API" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Guillaume Lemaitre.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.0.1.dev0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

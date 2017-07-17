@@ -1,0 +1,419 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>specio_ext &mdash; specio 0.0.1.dev0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/specio.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="specio 0.0.1.dev0 documentation" href="../index.html"/>
+        <link rel="up" title="Module code" href="index.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> specio
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.1.dev0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../sec_gettingstarted.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sec_user.html">User documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sec_dev.html">Developer documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">specio</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Module code</a> &raquo;</li>
+        
+      <li>specio_ext</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for specio_ext</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot; Invoke various functionality for specio docs.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">import</span> <span class="nn">specio</span>
+
+<span class="n">THIS_DIR</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span>
+<span class="n">DOC_DIR</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">THIS_DIR</span><span class="p">,</span> <span class="s1">&#39;..&#39;</span><span class="p">)</span>
+
+
+<span class="n">files_to_remove</span> <span class="o">=</span> <span class="p">[]</span>
+
+
+<span class="k">def</span> <span class="nf">setup</span><span class="p">(</span><span class="n">app</span><span class="p">):</span>
+    <span class="n">init</span><span class="p">()</span>
+    <span class="n">app</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s1">&#39;build-finished&#39;</span><span class="p">,</span> <span class="n">clean</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">init</span><span class="p">():</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Special preparations for specio docs:&#39;</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">func</span> <span class="ow">in</span> <span class="p">[</span><span class="n">prepare_reader_and_witer</span><span class="p">,</span>
+                 <span class="n">prepare_core_docs</span><span class="p">,</span>
+                 <span class="n">create_plugin_docs</span><span class="p">,</span>
+                 <span class="n">create_format_docs</span><span class="p">,</span>
+                 <span class="p">]:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;  &#39;</span> <span class="o">+</span> <span class="n">func</span><span class="o">.</span><span class="vm">__doc__</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+        <span class="n">func</span><span class="p">()</span>
+
+
+<span class="k">def</span> <span class="nf">clean</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">fname</span> <span class="ow">in</span> <span class="n">files_to_remove</span><span class="p">:</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">DOC_DIR</span><span class="p">,</span> <span class="n">fname</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_write</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+    <span class="n">files_to_remove</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">DOC_DIR</span><span class="p">,</span> <span class="n">fname</span><span class="p">),</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">text</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">))</span>
+
+
+<span class="c1">##</span>
+
+
+<span class="k">def</span> <span class="nf">prepare_reader_and_witer</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot; Prepare Format.Reader and Format.Writer for doc generation.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Create Reader and Writer subclasses that are going to be placed</span>
+    <span class="c1"># in the format module so that autoclass can find them. They need</span>
+    <span class="c1"># to be new classes, otherwise sphinx considers them aliases.</span>
+    <span class="c1"># We create the class using type() so that we can copy the __doc__.</span>
+    <span class="n">Reader</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="s1">&#39;Reader&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">specio</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">format</span><span class="o">.</span><span class="n">Format</span><span class="o">.</span><span class="n">Reader</span><span class="p">,</span> <span class="p">),</span>
+                  <span class="p">{</span><span class="s1">&#39;__doc__&#39;</span><span class="p">:</span> <span class="n">specio</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">format</span><span class="o">.</span><span class="n">Format</span><span class="o">.</span><span class="n">Reader</span><span class="o">.</span><span class="vm">__doc__</span> <span class="p">})</span>
+
+    <span class="n">specio</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">format</span><span class="o">.</span><span class="n">Reader</span> <span class="o">=</span> <span class="n">Reader</span>
+
+    <span class="c1"># We set the docs of the original classes, and remove the original</span>
+    <span class="c1"># classes so that Reader and Writer do not show up in the docs of</span>
+    <span class="c1"># the Format class.</span>
+    <span class="n">specio</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">format</span><span class="o">.</span><span class="n">Format</span><span class="o">.</span><span class="n">Reader</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># .__doc__ = &#39;&#39;</span>
+
+
+<span class="k">def</span> <span class="nf">prepare_core_docs</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot; Prepare specio.core for doc generation.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Set __all__ and add to __doc__ in specio.core module,</span>
+    <span class="c1"># so that the documentation gets generated correctly.</span>
+
+    <span class="n">D</span> <span class="o">=</span> <span class="n">specio</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="vm">__dict__</span>
+
+    <span class="n">excludes</span> <span class="o">=</span> <span class="s1">&#39;binary_type&#39;</span><span class="p">,</span> <span class="s1">&#39;text_type&#39;</span>
+
+    <span class="c1"># Collect functions and classes in specio.core</span>
+    <span class="n">functions</span><span class="p">,</span> <span class="n">classes</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+    <span class="n">func_type</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">prepare_core_docs</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">D</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">excludes</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="n">ob</span> <span class="o">=</span> <span class="n">D</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ob</span><span class="p">,</span> <span class="nb">type</span><span class="p">):</span>
+            <span class="n">classes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ob</span><span class="p">,</span> <span class="n">func_type</span><span class="p">):</span>
+            <span class="n">functions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="c1"># Write summaries</span>
+    <span class="n">classes</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+    <span class="n">functions</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+    <span class="n">extradocs</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Functions: &#39;</span>
+    <span class="n">extradocs</span> <span class="o">+=</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s1">&#39;:func:`.</span><span class="si">%s</span><span class="s1">`&#39;</span> <span class="o">%</span> <span class="n">n</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">functions</span><span class="p">])</span>
+    <span class="n">extradocs</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">Classes: &#39;</span>
+    <span class="n">extradocs</span> <span class="o">+=</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s1">&#39;:class:`.</span><span class="si">%s</span><span class="s1">`&#39;</span> <span class="o">%</span> <span class="n">n</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">classes</span><span class="p">])</span>
+    <span class="n">extradocs</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">----</span><span class="se">\n</span><span class="s1">&#39;</span>
+
+    <span class="c1"># Update</span>
+    <span class="k">if</span> <span class="n">D</span><span class="p">[</span><span class="s1">&#39;__doc__&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">D</span><span class="p">[</span><span class="s1">&#39;__doc__&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">extradocs</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">D</span><span class="p">[</span><span class="s1">&#39;__doc__&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="n">extradocs</span>
+    <span class="n">D</span><span class="p">[</span><span class="s1">&#39;__all__&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">functions</span> <span class="o">+</span> <span class="n">classes</span>
+
+
+<span class="k">def</span> <span class="nf">create_plugin_docs</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot; Create docs for creating plugins.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Build main plugin dir</span>
+    <span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;Creating specio plugins&quot;</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="se">\n</span><span class="si">%s</span><span class="se">\n\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="s1">&#39;=&#39;</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">title</span><span class="p">))</span>
+
+    <span class="n">text</span> <span class="o">+=</span> <span class="s1">&#39;.. automodule:: specio.plugins</span><span class="se">\n\n</span><span class="s1">&#39;</span>
+
+    <span class="c1"># Insert code from example plugin</span>
+    <span class="n">text</span> <span class="o">+=</span> <span class="s1">&#39;Example / template plugin</span><span class="se">\n</span><span class="s1">-------------------------</span><span class="se">\n\n</span><span class="s1">&#39;</span>
+    <span class="n">text</span> <span class="o">+=</span> <span class="s2">&quot;.. code-block:: python</span><span class="se">\n</span><span class="s2">    :linenos:</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+    <span class="n">filename</span> <span class="o">=</span> <span class="n">specio</span><span class="o">.</span><span class="n">plugins</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="vm">__file__</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;.pyc&#39;</span><span class="p">,</span> <span class="s1">&#39;.py&#39;</span><span class="p">)</span>
+    <span class="n">code</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+    <span class="n">code</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s1">&#39;    &#39;</span> <span class="o">+</span> <span class="n">line</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">code</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()])</span>
+    <span class="n">text</span> <span class="o">+=</span> <span class="n">code</span>
+
+    <span class="c1"># Write</span>
+    <span class="n">_write</span><span class="p">(</span><span class="s1">&#39;plugins.rst&#39;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+
+<span class="n">format_doc_text</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">This page lists all formats currently supported by specio. Each format can</span>
+<span class="s2">support extra keyword arguments for reading and writing, which can be specified</span>
+<span class="s2">in the call to ``get_reader()``, ``specread()`` etc.  Further, formats are free</span>
+<span class="s2">to provide additional methods on their Reader object. These</span>
+<span class="s2">parameters and extra methods are specified in the documentation for each</span>
+<span class="s2">format.</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+
+<span class="k">def</span> <span class="nf">create_format_docs</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot; Create documentation for the formats.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Build main plugin dir</span>
+    <span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;Docs for specio formats&quot;</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="se">\n</span><span class="si">%s</span><span class="se">\n</span><span class="si">%s</span><span class="se">\n\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="s1">&#39;=&#39;</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">title</span><span class="p">),</span> <span class="n">title</span><span class="p">,</span> <span class="s1">&#39;=&#39;</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">title</span><span class="p">))</span>
+
+    <span class="n">text</span> <span class="o">+=</span> <span class="n">format_doc_text</span>
+
+    <span class="c1"># Get bullet list of all formats</span>
+    <span class="n">ss</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">]</span>
+    <span class="n">covered_formats</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">modemap</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;s&#39;</span><span class="p">:</span> <span class="s1">&#39;Single spectrum&#39;</span><span class="p">,</span> <span class="s1">&#39;S&#39;</span><span class="p">:</span> <span class="s1">&#39;Multiple spectra&#39;</span><span class="p">}</span>
+    <span class="k">for</span> <span class="n">mode</span> <span class="ow">in</span> <span class="s1">&#39;sS&#39;</span><span class="p">:</span>
+        <span class="n">subtitle</span> <span class="o">=</span> <span class="n">modemap</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">mode</span><span class="p">,</span> <span class="s1">&#39;Unsorted&#39;</span><span class="p">)</span>
+        <span class="n">subs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="nb">format</span> <span class="ow">in</span> <span class="n">specio</span><span class="o">.</span><span class="n">formats</span><span class="p">:</span>
+            <span class="k">if</span> <span class="p">((</span><span class="n">mode</span> <span class="ow">in</span> <span class="nb">format</span><span class="o">.</span><span class="n">modes</span><span class="p">)</span> <span class="ow">or</span>
+                    <span class="p">(</span><span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;-&#39;</span> <span class="ow">and</span> <span class="nb">format</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">covered_formats</span><span class="p">)):</span>
+                <span class="n">covered_formats</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">format</span><span class="p">)</span>
+                <span class="n">s</span> <span class="o">=</span> <span class="s1">&#39;  * :ref:`</span><span class="si">%s</span><span class="s1"> &lt;</span><span class="si">%s</span><span class="s1">&gt;` - </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">format</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                                                 <span class="nb">format</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                                                 <span class="nb">format</span><span class="o">.</span><span class="n">description</span><span class="p">)</span>
+                <span class="n">subs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">subs</span><span class="p">:</span>
+            <span class="n">ss</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="se">\n</span><span class="si">%s</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">subtitle</span><span class="p">,</span> <span class="s1">&#39;^&#39;</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">subtitle</span><span class="p">)))</span>
+            <span class="n">ss</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">subs</span><span class="p">)</span>
+            <span class="n">ss</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+
+    <span class="n">text</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ss</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">&#39;</span>
+    <span class="n">_write</span><span class="p">(</span><span class="s1">&#39;formats.rst&#39;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+
+
+    <span class="c1"># Get more docs for each format</span>
+    <span class="k">for</span> <span class="nb">format</span> <span class="ow">in</span> <span class="n">specio</span><span class="o">.</span><span class="n">formats</span><span class="p">:</span>
+
+        <span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">format</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="nb">format</span><span class="o">.</span><span class="n">description</span><span class="p">)</span>
+        <span class="n">ext</span> <span class="o">=</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s1">&#39;``</span><span class="si">%s</span><span class="s1">``&#39;</span> <span class="o">%</span> <span class="n">e</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">format</span><span class="o">.</span><span class="n">extensions</span><span class="p">])</span>
+        <span class="n">ext</span> <span class="o">=</span> <span class="n">ext</span> <span class="ow">or</span> <span class="s1">&#39;None&#39;</span>
+        <span class="c1">#</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39;:orphan:</span><span class="se">\n\n</span><span class="s1">&#39;</span>
+        <span class="n">text</span> <span class="o">+=</span> <span class="s1">&#39;.. _</span><span class="si">%s</span><span class="s1">:</span><span class="se">\n\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="nb">format</span><span class="o">.</span><span class="n">name</span>
+        <span class="n">text</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="se">\n</span><span class="si">%s</span><span class="se">\n\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="s1">&#39;=&#39;</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">title</span><span class="p">))</span>
+        <span class="c1">#</span>
+        <span class="n">text</span> <span class="o">+=</span> <span class="s1">&#39;Extensions: </span><span class="si">%s</span><span class="se">\n\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">ext</span>
+        <span class="n">docs</span> <span class="o">=</span> <span class="s1">&#39;    &#39;</span> <span class="o">+</span> <span class="nb">format</span><span class="o">.</span><span class="vm">__doc__</span><span class="o">.</span><span class="n">lstrip</span><span class="p">()</span>
+        <span class="n">docs</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">x</span><span class="p">[</span><span class="mi">4</span><span class="p">:]</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">docs</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()])</span>
+        <span class="c1">#</span>
+        <span class="n">text</span> <span class="o">+=</span> <span class="n">docs</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">&#39;</span>
+
+        <span class="c1">#members = &#39;\n  :members:\n\n&#39;</span>
+        <span class="c1">#text += &#39;.. autoclass:: %s.Reader%s&#39; % (format.__module__, members)</span>
+        <span class="c1">#text += &#39;.. autoclass:: %s.Writer%s&#39; % (format.__module__, members)</span>
+        <span class="n">_write</span><span class="p">(</span><span class="s1">&#39;format_</span><span class="si">%s</span><span class="s1">.rst&#39;</span> <span class="o">%</span> <span class="nb">format</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span> <span class="n">text</span><span class="p">)</span>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Guillaume Lemaitre.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.0.1.dev0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

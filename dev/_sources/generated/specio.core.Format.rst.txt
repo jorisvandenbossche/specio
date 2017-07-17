@@ -1,0 +1,35 @@
+specio\.core\.Format
+====================
+
+.. currentmodule:: specio.core
+
+.. autoclass:: Format
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~Format.__init__
+      ~Format.can_read
+      ~Format.get_reader
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~Format.Reader
+      ~Format.description
+      ~Format.doc
+      ~Format.extensions
+      ~Format.modes
+      ~Format.name
+   
+   

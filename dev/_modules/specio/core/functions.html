@@ -1,0 +1,377 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>specio.core.functions &mdash; specio 0.0.1.dev0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/specio.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../_static/gallery.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="specio 0.0.1.dev0 documentation" href="../../../index.html"/>
+        <link rel="up" title="Module code" href="../../index.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> specio
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.1.dev0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../sec_gettingstarted.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sec_user.html">User documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sec_dev.html">Developer documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">specio</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>specio.core.functions</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for specio.core.functions</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">These functions represent specio&#39;s main interface for the user. They provide a</span>
+<span class="sd">common API to read spectra data for a large variety of formats. All read</span>
+<span class="sd">functions accept keyword arguments, which are passed on to the format that does</span>
+<span class="sd">the actual work.  To see what keyword arguments are supported by a specific</span>
+<span class="sd">format, use the :func:`.help` function.</span>
+
+<span class="sd">Functions for reading:</span>
+
+<span class="sd">  * :func:`.specread` - read a file with spectra from the specified uri</span>
+
+<span class="sd">More control:</span>
+
+<span class="sd">For a larger degree of control, specio provides a function</span>
+<span class="sd">:func:`.get_reader`. It returns an :class:`.Reader` object, which can be used</span>
+<span class="sd">to read data and meta data in a more controlled manner.  This also allows</span>
+<span class="sd">specific scientific formats to be exposed in a way that best suits that</span>
+<span class="sd">file-format.</span>
+
+<span class="sd">----</span>
+
+<span class="sd">Supported resource URI&#39;s:</span>
+
+<span class="sd">All functions described here accept a URI to describe the resource to</span>
+<span class="sd">read from or write to. These can be a wide range of things.</span>
+
+<span class="sd">For reading:</span>
+
+<span class="sd">* a normal filename, e.g. ``&#39;c:\\foo\\bar.png&#39;``</span>
+<span class="sd">* a file object with a ``read()`` / ``write()`` method.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1"># Copyright (c) 2017</span>
+<span class="c1"># Authors: Guillaume Lemaitre &lt;guillaume.lemaitre@inria.fr&gt;</span>
+<span class="c1"># License: BSD 3 clause</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
+
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">Request</span>
+<span class="kn">from</span> <span class="nn">..</span> <span class="k">import</span> <span class="n">formats</span>
+
+
+<div class="viewcode-block" id="help"><a class="viewcode-back" href="../../../api.html#specio.core.functions.help">[docs]</a><span class="k">def</span> <span class="nf">help</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Print the help regarding a given format.</span>
+
+<span class="sd">    Print the documentation of the format specified by name, or a list of</span>
+<span class="sd">    supported formats if name is omitted.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    name : str</span>
+<span class="sd">        Can be the name of a format, a filename extension, or a full</span>
+<span class="sd">        filename. See also the :doc:`formats page &lt;formats&gt;`.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">name</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">formats</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">formats</span><span class="p">[</span><span class="n">name</span><span class="p">])</span></div>
+
+<span class="c1"># Base functions that return a reader</span>
+
+
+<div class="viewcode-block" id="get_reader"><a class="viewcode-back" href="../../../api.html#specio.core.functions.get_reader">[docs]</a><span class="k">def</span> <span class="nf">get_reader</span><span class="p">(</span><span class="n">uri</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;?&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return a Reader instance.</span>
+
+<span class="sd">    Returns a :class:`.Reader` object which can be used to read data</span>
+<span class="sd">    and meta data from the specified file.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    uri : {str, file}</span>
+<span class="sd">        The resource to load the image from, e.g. a filename.</span>
+
+<span class="sd">    format : str</span>
+<span class="sd">        The format to use to read the file. By default specio selects</span>
+<span class="sd">        the appropriate for you based on the filename and its contents.</span>
+
+<span class="sd">    mode : {&#39;s&#39;, &#39;S&#39;, &#39;?&#39;}</span>
+<span class="sd">        Used to give the reader a hint on what the user expects (default &quot;?&quot;):</span>
+<span class="sd">        &quot;s&quot; for a single spectra, &quot;S&quot; for multiple spectrum or</span>
+<span class="sd">        &quot;?&quot; for don&#39;t care.</span>
+
+<span class="sd">    kwargs : dict</span>
+<span class="sd">        Further keyword arguments are passed to the reader. See :func:`.help`</span>
+<span class="sd">        to see what arguments are available for a particular format.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    reader : Format.Reader</span>
+<span class="sd">        :class:`specio.Reader` instance allowing to read the data.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Create request object</span>
+    <span class="n">request</span> <span class="o">=</span> <span class="n">Request</span><span class="p">(</span><span class="n">uri</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="c1"># Get format</span>
+    <span class="k">if</span> <span class="nb">format</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">format</span> <span class="o">=</span> <span class="n">formats</span><span class="p">[</span><span class="nb">format</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">format</span> <span class="o">=</span> <span class="n">formats</span><span class="o">.</span><span class="n">search_read_format</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">format</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Could not find a format to read the specified file &#39;</span>
+                         <span class="s1">&#39;in mode </span><span class="si">%r</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">mode</span><span class="p">)</span>
+
+    <span class="c1"># Return its reader object</span>
+    <span class="k">return</span> <span class="nb">format</span><span class="o">.</span><span class="n">get_reader</span><span class="p">(</span><span class="n">request</span><span class="p">)</span></div>
+
+<span class="c1"># Spectra</span>
+
+
+<div class="viewcode-block" id="specread"><a class="viewcode-back" href="../../../api.html#specio.core.functions.specread">[docs]</a><span class="k">def</span> <span class="nf">specread</span><span class="p">(</span><span class="n">uri</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Read spectra in a given format.</span>
+
+<span class="sd">    Reads spectrum from the specified file. Returns a :class:`specio.Spectrum`</span>
+<span class="sd">    instance containing the data, wavelength, and the meta data</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    uri : {str, file}</span>
+<span class="sd">        The resource to load the image from, e.g. a filename, http address or</span>
+<span class="sd">        file object, see the docs for more info.</span>
+
+<span class="sd">    format : str</span>
+<span class="sd">        The format to use to read the file. By default imageio selects</span>
+<span class="sd">        the appropriate for you based on the filename and its contents.</span>
+
+<span class="sd">    kwargs : dict</span>
+<span class="sd">        Further keyword arguments are passed to the reader. See :func:`.help`</span>
+<span class="sd">        to see what arguments are available for a particular format.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    spectrum : specio.Spectrum</span>
+<span class="sd">        A :class:`specio.Spectrum` instance containing the data, wavelength,</span>
+<span class="sd">        and meta data.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Get reader and read first</span>
+    <span class="n">reader</span> <span class="o">=</span> <span class="n">read</span><span class="p">(</span><span class="n">uri</span><span class="p">,</span> <span class="nb">format</span><span class="p">,</span> <span class="s1">&#39;s&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">with</span> <span class="n">reader</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">reader</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span></div>
+
+<span class="c1"># Aliases</span>
+
+
+<span class="n">read</span> <span class="o">=</span> <span class="n">get_reader</span>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Guillaume Lemaitre.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'0.0.1.dev0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

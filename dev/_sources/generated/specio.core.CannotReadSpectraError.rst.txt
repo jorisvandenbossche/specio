@@ -1,0 +1,6 @@
+specio\.core\.CannotReadSpectraError
+====================================
+
+.. currentmodule:: specio.core
+
+.. autoexception:: CannotReadSpectraError
