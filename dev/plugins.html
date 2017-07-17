@@ -193,7 +193,7 @@ arguments, as well get access to the raw image data.</p>
 specio to automatically select it for a specific file, the format must
 be registered using <code class="docutils literal"><span class="pre">specio.formats.add_format()</span></code>.</p>
 <p>Note that a plugin is not required to be part of the specio package; as
-long as a format is registered, imageio can use it. This makes specio very
+long as a format is registered, specio can use it. This makes specio very
 easy to extend.</p>
 </div>
 <div class="section" id="what-methods-to-implement">
@@ -225,7 +225,7 @@ user-provided keyword arguments here.</li>
 the user expects. Can be <code class="docutils literal"><span class="pre">inf</span></code> for streaming data.</li>
 <li>Implement <code class="docutils literal"><span class="pre">_get_data(index)</span></code> to return an array and a meta-data dict.</li>
 <li>Implement <code class="docutils literal"><span class="pre">_get_meta_data(index)</span></code> to return a meta-data dict. If index
-is None, it should return the &#8216;global&#8217; meta-data.</li>
+is None, it should return the ‘global’ meta-data.</li>
 </ul>
 </div></blockquote>
 </div>

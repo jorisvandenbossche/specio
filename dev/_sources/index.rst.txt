@@ -6,8 +6,7 @@
 Welcome to specio's documentation!
 ==================================
 
-.. automodule:: imageio
-
+.. automodule:: specio
 
 Contents:
 
