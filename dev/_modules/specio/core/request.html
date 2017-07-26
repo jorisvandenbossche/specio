@@ -192,10 +192,6 @@
 <span class="sd">    uri : {str, file}</span>
 <span class="sd">        The resource to load the image from.</span>
 
-<span class="sd">    mode : str</span>
-<span class="sd">        This character is used to indicate the kind of data:</span>
-<span class="sd">        &quot;s&quot; for a spectrum, &quot;S&quot; for multiple spectra, &quot;?&quot; for don&#39;t care.</span>
-
 <span class="sd">    kwargs : dict</span>
 <span class="sd">        Keywords to pass to the plugin.</span>
 
@@ -206,7 +202,7 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="Request.__init__"><a class="viewcode-back" href="../../../generated/specio.core.Request.html#specio.core.Request.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">uri</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="Request.__init__"><a class="viewcode-back" href="../../../generated/specio.core.Request.html#specio.core.Request.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">uri</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 
         <span class="c1"># General</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_uri_type</span> <span class="o">=</span> <span class="kc">None</span>
@@ -222,15 +218,6 @@
 
         <span class="c1"># To store formats that may be able to fulfil this request</span>
         <span class="c1"># self._potential_formats = []</span>
-
-        <span class="c1"># Check mode</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_mode</span> <span class="o">=</span> <span class="n">mode</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mode</span><span class="p">,</span> <span class="n">string_types</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Request requires mode must be a string&#39;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">mode</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Request requires mode to have one char&#39;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">mode</span> <span class="ow">not</span> <span class="ow">in</span> <span class="s1">&#39;sS?&#39;</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Request requires mode to be in &quot;sS?&quot;&#39;</span><span class="p">)</span>
 
         <span class="c1"># Parse what was given</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_parse_uri</span><span class="p">(</span><span class="n">uri</span><span class="p">)</span></div>
@@ -296,11 +283,6 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_filename</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">mode</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Mode of the request.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mode</span>
-
-    <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">kwargs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Keywords required to read the file.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_kwargs</span>
@@ -310,9 +292,9 @@
 <div class="viewcode-block" id="Request.get_file"><a class="viewcode-back" href="../../../generated/specio.core.Request.html#specio.core.Request.get_file">[docs]</a>    <span class="k">def</span> <span class="nf">get_file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get a file object for the resource.</span>
 
-<span class="sd">        Get a file object for the resource associated with this request. Read</span>
-<span class="sd">        the file in read mode. This method is not thread safe. Plugins do not</span>
-<span class="sd">        need to close the file when done.</span>
+<span class="sd">        Get a file object for the resource associated with this request.</span>
+<span class="sd">        This method is not thread safe. Plugins do not need to close the file</span>
+<span class="sd">        when done.</span>
 
 <span class="sd">        This is the preferred way to read the data. But if a format cannot</span>
 <span class="sd">        handle file-like objects, they should use ``get_local_filename()``.</span>

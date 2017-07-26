@@ -11,14 +11,7 @@ parameters and extra methods are specified in the documentation for each
 format.
 
 
-Single spectrum
-^^^^^^^^^^^^^^^
-
   * :ref:`DUMMY <DUMMY>` - An example format that does nothing.
-
-Multiple spectra
-^^^^^^^^^^^^^^^^
-
-  * :ref:`DUMMY <DUMMY>` - An example format that does nothing.
+  * :ref:`SPC <SPC>` - Galactic Industries Corporation SPC binary format
 
 

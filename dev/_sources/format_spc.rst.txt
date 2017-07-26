@@ -1,0 +1,19 @@
+:orphan:
+
+.. _SPC:
+
+SPC Galactic Industries Corporation SPC binary format
+=====================================================
+
+Extensions: ``.spc``
+
+Plugin to read SPC file.
+
+Parameters
+----------
+
+Attributes
+----------
+
+
+

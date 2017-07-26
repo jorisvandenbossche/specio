@@ -335,9 +335,7 @@ is None, it should return the ‘global’ meta-data.</li>
 102
 103
 104
-105
-106
-107</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;Example plugin. You can use this as a template for your own plugin.&quot;&quot;&quot;</span>
+105</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;Example plugin. You can use this as a template for your own plugin.&quot;&quot;&quot;</span>
 
 <span class="c1"># Copyright (c) 2017</span>
 <span class="c1"># Authors: Guillaume Lemaitre &lt;guillaume.lemaitre@inria.fr&gt;</span>
@@ -373,7 +371,7 @@ is None, it should return the ‘global’ meta-data.</li>
         <span class="c1"># for a format to read a certain image. Return True if this format</span>
         <span class="c1"># can do it.</span>
         <span class="c1">#</span>
-        <span class="c1"># The format manager is aware of the extensions and the modes</span>
+        <span class="c1"># The format manager is aware of the extensions</span>
         <span class="c1"># that each format can handle. It will first ask all formats</span>
         <span class="c1"># that *seem* to be able to read it whether they can. If none</span>
         <span class="c1"># can, it will ask the remaining formats if they can: the</span>
@@ -389,9 +387,8 @@ is None, it should return the ‘global’ meta-data.</li>
         <span class="c1"># request.filename: a representation of the source (only for reporting)</span>
         <span class="c1"># request.firstbytes: the first 256 bytes of the file.</span>
 
-        <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">mode</span> <span class="ow">in</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">modes</span> <span class="o">+</span> <span class="s1">&#39;?&#39;</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">filename</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">extensions</span><span class="p">):</span>
-                <span class="k">return</span> <span class="bp">True</span>
+        <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">filename</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">extensions</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">True</span>
         <span class="k">return</span> <span class="bp">False</span>
     <span class="c1"># -- reader</span>
 
@@ -418,9 +415,9 @@ is None, it should return the ‘global’ meta-data.</li>
             <span class="c1"># Return the number of images. Can be np.inf</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_length</span>
 
-        <span class="k">def</span> <span class="nf">_get_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">_get_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
             <span class="c1"># Return the data and meta data for the given index</span>
-            <span class="k">if</span> <span class="n">index</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_length</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">index</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">index</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_length</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span><span class="s1">&#39;Image index </span><span class="si">%i</span><span class="s1"> &gt; </span><span class="si">%i</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_length</span><span class="p">))</span>
             <span class="c1"># Read all bytes</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
@@ -441,7 +438,6 @@ is None, it should return the ‘global’ meta-data.</li>
 <span class="n">format</span> <span class="o">=</span> <span class="n">DummyFormat</span><span class="p">(</span><span class="s1">&#39;dummy&#39;</span><span class="p">,</span>  <span class="c1"># short name</span>
                      <span class="s1">&#39;An example format that does nothing.&#39;</span><span class="p">,</span>  <span class="c1"># one line descr.</span>
                      <span class="s1">&#39;.foobar .nonexistentext&#39;</span><span class="p">,</span>  <span class="c1"># list of extensions</span>
-                     <span class="s1">&#39;sS&#39;</span>  <span class="c1"># modes, characters in sS</span>
                      <span class="p">)</span>
 <span class="n">formats</span><span class="o">.</span><span class="n">add_format</span><span class="p">(</span><span class="n">format</span><span class="p">)</span>
 </pre></div>

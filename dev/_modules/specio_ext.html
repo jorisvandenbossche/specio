@@ -216,7 +216,7 @@
     <span class="c1"># to be new classes, otherwise sphinx considers them aliases.</span>
     <span class="c1"># We create the class using type() so that we can copy the __doc__.</span>
     <span class="n">Reader</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="s1">&#39;Reader&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">specio</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">format</span><span class="o">.</span><span class="n">Format</span><span class="o">.</span><span class="n">Reader</span><span class="p">,</span> <span class="p">),</span>
-                  <span class="p">{</span><span class="s1">&#39;__doc__&#39;</span><span class="p">:</span> <span class="n">specio</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">format</span><span class="o">.</span><span class="n">Format</span><span class="o">.</span><span class="n">Reader</span><span class="o">.</span><span class="vm">__doc__</span> <span class="p">})</span>
+                  <span class="p">{</span><span class="s1">&#39;__doc__&#39;</span><span class="p">:</span> <span class="n">specio</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">format</span><span class="o">.</span><span class="n">Format</span><span class="o">.</span><span class="n">Reader</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">})</span>
 
     <span class="n">specio</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">format</span><span class="o">.</span><span class="n">Reader</span> <span class="o">=</span> <span class="n">Reader</span>
 
@@ -286,6 +286,7 @@
     <span class="c1"># Write</span>
     <span class="n">_write</span><span class="p">(</span><span class="s1">&#39;plugins.rst&#39;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
 
+
 <span class="n">format_doc_text</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">This page lists all formats currently supported by specio. Each format can</span>
 <span class="s2">support extra keyword arguments for reading and writing, which can be specified</span>
@@ -308,27 +309,18 @@
 
     <span class="c1"># Get bullet list of all formats</span>
     <span class="n">ss</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">]</span>
-    <span class="n">covered_formats</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">modemap</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;s&#39;</span><span class="p">:</span> <span class="s1">&#39;Single spectrum&#39;</span><span class="p">,</span> <span class="s1">&#39;S&#39;</span><span class="p">:</span> <span class="s1">&#39;Multiple spectra&#39;</span><span class="p">}</span>
-    <span class="k">for</span> <span class="n">mode</span> <span class="ow">in</span> <span class="s1">&#39;sS&#39;</span><span class="p">:</span>
-        <span class="n">subtitle</span> <span class="o">=</span> <span class="n">modemap</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">mode</span><span class="p">,</span> <span class="s1">&#39;Unsorted&#39;</span><span class="p">)</span>
-        <span class="n">subs</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="nb">format</span> <span class="ow">in</span> <span class="n">specio</span><span class="o">.</span><span class="n">formats</span><span class="p">:</span>
-            <span class="k">if</span> <span class="p">((</span><span class="n">mode</span> <span class="ow">in</span> <span class="nb">format</span><span class="o">.</span><span class="n">modes</span><span class="p">)</span> <span class="ow">or</span>
-                    <span class="p">(</span><span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;-&#39;</span> <span class="ow">and</span> <span class="nb">format</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">covered_formats</span><span class="p">)):</span>
-                <span class="n">covered_formats</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">format</span><span class="p">)</span>
-                <span class="n">s</span> <span class="o">=</span> <span class="s1">&#39;  * :ref:`</span><span class="si">%s</span><span class="s1"> &lt;</span><span class="si">%s</span><span class="s1">&gt;` - </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">format</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-                                                 <span class="nb">format</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-                                                 <span class="nb">format</span><span class="o">.</span><span class="n">description</span><span class="p">)</span>
-                <span class="n">subs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">subs</span><span class="p">:</span>
-            <span class="n">ss</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="se">\n</span><span class="si">%s</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">subtitle</span><span class="p">,</span> <span class="s1">&#39;^&#39;</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">subtitle</span><span class="p">)))</span>
-            <span class="n">ss</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">subs</span><span class="p">)</span>
-            <span class="n">ss</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="n">subs</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="nb">format</span> <span class="ow">in</span> <span class="n">specio</span><span class="o">.</span><span class="n">formats</span><span class="p">:</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="s1">&#39;  * :ref:`</span><span class="si">%s</span><span class="s1"> &lt;</span><span class="si">%s</span><span class="s1">&gt;` - </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">format</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                                         <span class="nb">format</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                                         <span class="nb">format</span><span class="o">.</span><span class="n">description</span><span class="p">)</span>
+        <span class="n">subs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">subs</span><span class="p">:</span>
+        <span class="n">ss</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">subs</span><span class="p">)</span>
+        <span class="n">ss</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
 
     <span class="n">text</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ss</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">&#39;</span>
     <span class="n">_write</span><span class="p">(</span><span class="s1">&#39;formats.rst&#39;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
-
 
     <span class="c1"># Get more docs for each format</span>
     <span class="k">for</span> <span class="nb">format</span> <span class="ow">in</span> <span class="n">specio</span><span class="o">.</span><span class="n">formats</span><span class="p">:</span>
@@ -347,9 +339,9 @@
         <span class="c1">#</span>
         <span class="n">text</span> <span class="o">+=</span> <span class="n">docs</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">&#39;</span>
 
-        <span class="c1">#members = &#39;\n  :members:\n\n&#39;</span>
-        <span class="c1">#text += &#39;.. autoclass:: %s.Reader%s&#39; % (format.__module__, members)</span>
-        <span class="c1">#text += &#39;.. autoclass:: %s.Writer%s&#39; % (format.__module__, members)</span>
+        <span class="c1"># members = &#39;\n  :members:\n\n&#39;</span>
+        <span class="c1"># text += &#39;.. autoclass:: %s.Reader%s&#39; % (format.__module__, members)</span>
+        <span class="c1"># text += &#39;.. autoclass:: %s.Writer%s&#39; % (format.__module__, members)</span>
         <span class="n">_write</span><span class="p">(</span><span class="s1">&#39;format_</span><span class="si">%s</span><span class="s1">.rst&#39;</span> <span class="o">%</span> <span class="nb">format</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span> <span class="n">text</span><span class="p">)</span>
 </pre></div>
 

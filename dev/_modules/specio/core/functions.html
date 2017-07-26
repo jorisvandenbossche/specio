@@ -223,7 +223,7 @@
 <span class="c1"># Base functions that return a reader</span>
 
 
-<div class="viewcode-block" id="get_reader"><a class="viewcode-back" href="../../../api.html#specio.core.functions.get_reader">[docs]</a><span class="k">def</span> <span class="nf">get_reader</span><span class="p">(</span><span class="n">uri</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;?&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="get_reader"><a class="viewcode-back" href="../../../api.html#specio.core.functions.get_reader">[docs]</a><span class="k">def</span> <span class="nf">get_reader</span><span class="p">(</span><span class="n">uri</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Return a Reader instance.</span>
 
 <span class="sd">    Returns a :class:`.Reader` object which can be used to read data</span>
@@ -238,11 +238,6 @@
 <span class="sd">        The format to use to read the file. By default specio selects</span>
 <span class="sd">        the appropriate for you based on the filename and its contents.</span>
 
-<span class="sd">    mode : {&#39;s&#39;, &#39;S&#39;, &#39;?&#39;}</span>
-<span class="sd">        Used to give the reader a hint on what the user expects (default &quot;?&quot;):</span>
-<span class="sd">        &quot;s&quot; for a single spectra, &quot;S&quot; for multiple spectrum or</span>
-<span class="sd">        &quot;?&quot; for don&#39;t care.</span>
-
 <span class="sd">    kwargs : dict</span>
 <span class="sd">        Further keyword arguments are passed to the reader. See :func:`.help`</span>
 <span class="sd">        to see what arguments are available for a particular format.</span>
@@ -255,7 +250,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># Create request object</span>
-    <span class="n">request</span> <span class="o">=</span> <span class="n">Request</span><span class="p">(</span><span class="n">uri</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">request</span> <span class="o">=</span> <span class="n">Request</span><span class="p">(</span><span class="n">uri</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
     <span class="c1"># Get format</span>
     <span class="k">if</span> <span class="nb">format</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -263,8 +258,7 @@
     <span class="k">else</span><span class="p">:</span>
         <span class="nb">format</span> <span class="o">=</span> <span class="n">formats</span><span class="o">.</span><span class="n">search_read_format</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">format</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Could not find a format to read the specified file &#39;</span>
-                         <span class="s1">&#39;in mode </span><span class="si">%r</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">mode</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Could not find a format to read the specified file&#39;</span><span class="p">)</span>
 
     <span class="c1"># Return its reader object</span>
     <span class="k">return</span> <span class="nb">format</span><span class="o">.</span><span class="n">get_reader</span><span class="p">(</span><span class="n">request</span><span class="p">)</span></div>
@@ -281,8 +275,8 @@
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    uri : {str, file}</span>
-<span class="sd">        The resource to load the spectrum from, e.g. a filename, http address or</span>
-<span class="sd">        file object, see the docs for more info.</span>
+<span class="sd">        The resource to load the spectrum from, e.g. a filename or file object,</span>
+<span class="sd">        see the docs for more info.</span>
 
 <span class="sd">    format : str</span>
 <span class="sd">        The format to use to read the file. By default specio selects</span>
@@ -301,9 +295,9 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># Get reader and read first</span>
-    <span class="n">reader</span> <span class="o">=</span> <span class="n">read</span><span class="p">(</span><span class="n">uri</span><span class="p">,</span> <span class="nb">format</span><span class="p">,</span> <span class="s1">&#39;s&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">reader</span> <span class="o">=</span> <span class="n">read</span><span class="p">(</span><span class="n">uri</span><span class="p">,</span> <span class="nb">format</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
     <span class="k">with</span> <span class="n">reader</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">reader</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">reader</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></div>
 
 <span class="c1"># Aliases</span>
 

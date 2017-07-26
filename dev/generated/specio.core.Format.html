@@ -180,7 +180,7 @@
 <h1>specio.core.Format<a class="headerlink" href="#specio-core-format" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="specio.core.Format">
-<em class="property">class </em><code class="descclassname">specio.core.</code><code class="descname">Format</code><span class="sig-paren">(</span><em>name</em>, <em>description</em>, <em>extensions=None</em>, <em>modes=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/specio/core/format.html#Format"><span class="viewcode-link">[source]</span></a><a class="reference external" href="https://github.com/glemaitre/specio/blob/a480091/specio/core/format.py#L17"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#specio.core.Format" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">specio.core.</code><code class="descname">Format</code><span class="sig-paren">(</span><em>name</em>, <em>description</em>, <em>extensions=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/specio/core/format.html#Format"><span class="viewcode-link">[source]</span></a><a class="reference external" href="https://github.com/glemaitre/specio/blob/733bd91/specio/core/format.py#L17"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#specio.core.Format" title="Permalink to this definition">¶</a></dt>
 <dd><p>Represents an implementation to read a particular spectrum format.</p>
 <p>A format instance is responsible for: (i) providing information about a
 format, (ii) determining whether a certain file can be read with this
@@ -203,19 +203,12 @@ and the <a href="#id1"><span class="problematic" id="id2">``</span></a>Format.Re
 <div><p>A one-line description of the format.</p>
 </div></blockquote>
 <p><strong>extensions</strong> : str | list | None</p>
-<blockquote>
+<blockquote class="last">
 <div><p>List of filename extensions that this format supports. If a
 string is passed it should be space or comma separated. The
 extensions are used in the documentation and to allow users to
 select a format by file extension. It is not used to determine
 what format to use for reading a file.</p>
-</div></blockquote>
-<p><strong>modes</strong> : str</p>
-<blockquote class="last">
-<div><p>A string containing the modes that this format can handle (‘sS’),
-‘s’ for a single spectrum, ‘S’ for multiple spectrum.
-This attribute is used in the documentation and to select the
-formats when reading a file.</p>
 </div></blockquote>
 </td>
 </tr>
@@ -223,12 +216,12 @@ formats when reading a file.</p>
 </table>
 <dl class="method">
 <dt id="specio.core.Format.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><em>name</em>, <em>description</em>, <em>extensions=None</em>, <em>modes=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/specio/core/format.html#Format.__init__"><span class="viewcode-link">[source]</span></a><a class="reference external" href="https://github.com/glemaitre/specio/blob/a480091/specio/core/format.py#L53"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#specio.core.Format.__init__" title="Permalink to this definition">¶</a></dt>
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>name</em>, <em>description</em>, <em>extensions=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/specio/core/format.html#Format.__init__"><span class="viewcode-link">[source]</span></a><a class="reference external" href="https://github.com/glemaitre/specio/blob/733bd91/specio/core/format.py#L48"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#specio.core.Format.__init__" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="specio.core.Format.can_read">
-<code class="descname">can_read</code><span class="sig-paren">(</span><em>request</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/specio/core/format.html#Format.can_read"><span class="viewcode-link">[source]</span></a><a class="reference external" href="https://github.com/glemaitre/specio/blob/a480091/specio/core/format.py#L136"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#specio.core.Format.can_read" title="Permalink to this definition">¶</a></dt>
+<code class="descname">can_read</code><span class="sig-paren">(</span><em>request</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/specio/core/format.html#Format.can_read"><span class="viewcode-link">[source]</span></a><a class="reference external" href="https://github.com/glemaitre/specio/blob/733bd91/specio/core/format.py#L114"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#specio.core.Format.can_read" title="Permalink to this definition">¶</a></dt>
 <dd><p>Indicate a spectra resource can be read.</p>
 <p>Get whether this format can read data from the specified uri.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -271,7 +264,7 @@ formats when reading a file.</p>
 
 <dl class="method">
 <dt id="specio.core.Format.get_reader">
-<code class="descname">get_reader</code><span class="sig-paren">(</span><em>request</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/specio/core/format.html#Format.get_reader"><span class="viewcode-link">[source]</span></a><a class="reference external" href="https://github.com/glemaitre/specio/blob/a480091/specio/core/format.py#L112"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#specio.core.Format.get_reader" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_reader</code><span class="sig-paren">(</span><em>request</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/specio/core/format.html#Format.get_reader"><span class="viewcode-link">[source]</span></a><a class="reference external" href="https://github.com/glemaitre/specio/blob/733bd91/specio/core/format.py#L94"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#specio.core.Format.get_reader" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a Reader instance.</p>
 <p>Return a reader object that can be used to read data and info from the
 given file. Users are encouraged to use <a class="reference internal" href="../api.html#specio.get_reader" title="specio.get_reader"><code class="xref py py-func docutils literal"><span class="pre">specio.get_reader()</span></code></a>
@@ -294,12 +287,6 @@ instead.</p>
 </tr>
 </tbody>
 </table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="specio.core.Format.modes">
-<code class="descname">modes</code><a class="headerlink" href="#specio.core.Format.modes" title="Permalink to this definition">¶</a></dt>
-<dd><p>Format modes.</p>
 </dd></dl>
 
 <dl class="attribute">

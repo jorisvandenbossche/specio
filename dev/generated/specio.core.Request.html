@@ -180,7 +180,7 @@
 <h1>specio.core.Request<a class="headerlink" href="#specio-core-request" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="specio.core.Request">
-<em class="property">class </em><code class="descclassname">specio.core.</code><code class="descname">Request</code><span class="sig-paren">(</span><em>uri</em>, <em>mode</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/specio/core/request.html#Request"><span class="viewcode-link">[source]</span></a><a class="reference external" href="https://github.com/glemaitre/specio/blob/a480091/specio/core/request.py#L15"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#specio.core.Request" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">specio.core.</code><code class="descname">Request</code><span class="sig-paren">(</span><em>uri</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/specio/core/request.html#Request"><span class="viewcode-link">[source]</span></a><a class="reference external" href="https://github.com/glemaitre/specio/blob/733bd91/specio/core/request.py#L15"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#specio.core.Request" title="Permalink to this definition">¶</a></dt>
 <dd><p>Interface between a plugin and the spectra resource.</p>
 <p>Represents a request for reading an spectra resource. This object wraps
 information to that request and acts as an interface for the plugins to
@@ -199,11 +199,6 @@ between a format and associated reader.</p>
 <blockquote>
 <div><p>The resource to load the image from.</p>
 </div></blockquote>
-<p><strong>mode</strong> : str</p>
-<blockquote>
-<div><p>This character is used to indicate the kind of data:
-“s” for a spectrum, “S” for multiple spectra, “?” for don’t care.</p>
-</div></blockquote>
 <p><strong>kwargs</strong> : dict</p>
 <blockquote class="last">
 <div><p>Keywords to pass to the plugin.</p>
@@ -214,7 +209,7 @@ between a format and associated reader.</p>
 </table>
 <dl class="method">
 <dt id="specio.core.Request.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><em>uri</em>, <em>mode</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/specio/core/request.html#Request.__init__"><span class="viewcode-link">[source]</span></a><a class="reference external" href="https://github.com/glemaitre/specio/blob/a480091/specio/core/request.py#L48"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#specio.core.Request.__init__" title="Permalink to this definition">¶</a></dt>
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>uri</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/specio/core/request.html#Request.__init__"><span class="viewcode-link">[source]</span></a><a class="reference external" href="https://github.com/glemaitre/specio/blob/733bd91/specio/core/request.py#L44"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#specio.core.Request.__init__" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -232,11 +227,11 @@ header to determine the file-format.</p>
 
 <dl class="method">
 <dt id="specio.core.Request.get_file">
-<code class="descname">get_file</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/specio/core/request.html#Request.get_file"><span class="viewcode-link">[source]</span></a><a class="reference external" href="https://github.com/glemaitre/specio/blob/a480091/specio/core/request.py#L149"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#specio.core.Request.get_file" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_file</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/specio/core/request.html#Request.get_file"><span class="viewcode-link">[source]</span></a><a class="reference external" href="https://github.com/glemaitre/specio/blob/733bd91/specio/core/request.py#L131"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#specio.core.Request.get_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a file object for the resource.</p>
-<p>Get a file object for the resource associated with this request. Read
-the file in read mode. This method is not thread safe. Plugins do not
-need to close the file when done.</p>
+<p>Get a file object for the resource associated with this request.
+This method is not thread safe. Plugins do not need to close the file
+when done.</p>
 <p>This is the preferred way to read the data. But if a format cannot
 handle file-like objects, they should use <code class="docutils literal"><span class="pre">get_local_filename()</span></code>.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -258,7 +253,7 @@ handle file-like objects, they should use <code class="docutils literal"><span c
 
 <dl class="method">
 <dt id="specio.core.Request.get_local_filename">
-<code class="descname">get_local_filename</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/specio/core/request.html#Request.get_local_filename"><span class="viewcode-link">[source]</span></a><a class="reference external" href="https://github.com/glemaitre/specio/blob/a480091/specio/core/request.py#L180"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#specio.core.Request.get_local_filename" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_local_filename</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/specio/core/request.html#Request.get_local_filename"><span class="viewcode-link">[source]</span></a><a class="reference external" href="https://github.com/glemaitre/specio/blob/733bd91/specio/core/request.py#L162"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#specio.core.Request.get_local_filename" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the filename of the resource.</p>
 <p>If the filename is an existing file on this filesystem, return
 that.</p>
@@ -283,12 +278,6 @@ that.</p>
 <dt id="specio.core.Request.kwargs">
 <code class="descname">kwargs</code><a class="headerlink" href="#specio.core.Request.kwargs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Keywords required to read the file.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="specio.core.Request.mode">
-<code class="descname">mode</code><a class="headerlink" href="#specio.core.Request.mode" title="Permalink to this definition">¶</a></dt>
-<dd><p>Mode of the request.</p>
 </dd></dl>
 
 </dd></dl>
