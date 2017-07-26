@@ -12,6 +12,6 @@ format.
 
 
   * :ref:`DUMMY <DUMMY>` - An example format that does nothing.
-  * :ref:`SPC <SPC>` - Galactic Industries Corporation SPC binary format
+  * :ref:`SPC <SPC>` - Galactic Industries Corporation binary format
 
 
