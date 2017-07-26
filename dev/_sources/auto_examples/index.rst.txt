@@ -11,13 +11,13 @@ Somewhere to start
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="This is a general example presenting how to read a spectra file.">
+    <div class="sphx-glr-thumbcontainer" tooltip="This example shows how to read SPC file and plot the results.">
 
 .. only:: html
 
-    .. figure:: /auto_examples/images/thumb/sphx_glr_plot_read_example_thumb.png
+    .. figure:: /auto_examples/images/thumb/sphx_glr_plot_read_spc_thumb.png
 
-        :ref:`sphx_glr_auto_examples_plot_read_example.py`
+        :ref:`sphx_glr_auto_examples_plot_read_spc.py`
 
 .. raw:: html
 
@@ -27,7 +27,7 @@ Somewhere to start
 .. toctree::
    :hidden:
 
-   /auto_examples/plot_read_example
+   /auto_examples/plot_read_spc
 .. raw:: html
 
     <div style='clear:both'></div>

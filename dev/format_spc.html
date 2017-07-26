@@ -167,6 +167,21 @@ spectra. The format can be regarded as a database with records of variable
 length and each record stores a different kind of data (instrumental
 information, information on one spectrum of a dataset, the spectrum itself
 or extra logs).</p>
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">specio</span> <span class="k">import</span> <span class="n">specread</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">specio.datasets</span> <span class="k">import</span> <span class="n">load_spc_path</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">spectra</span> <span class="o">=</span> <span class="n">specread</span><span class="p">(</span><span class="n">load_spc_path</span><span class="p">())</span>
+<span class="go">x-y(1)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">spectra</span><span class="o">.</span><span class="n">wavelength</span>
+<span class="go">array([  400.62109375,   402.94384766,   405.26721191, ...,  3797.08911133,</span>
+<span class="go">        3798.45288086,  3799.81542969])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">spectra</span><span class="o">.</span><span class="n">spectrum</span>
+<span class="go">array([[ 1487.        ,  1385.        ,  1441.        , ...,</span>
+<span class="go">          147.24124146,   139.16082764,   134.08041382]])</span>
+</pre></div>
+</div>
+</div>
 <div class="section" id="references">
 <h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
 <table class="docutils footnote" frame="void" id="id1" rules="none">
