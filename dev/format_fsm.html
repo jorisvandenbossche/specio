@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Docs for specio formats &mdash; specio 0.0.1.dev0 documentation</title>
+  <title>FSM FSM Perkin Elmer Spotlight IR instrument binary format &mdash; specio 0.0.1.dev0 documentation</title>
   
 
   
@@ -37,10 +37,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="specio 0.0.1.dev0 documentation" href="index.html"/>
-        <link rel="up" title="User documentation" href="sec_user.html"/>
-        <link rel="next" title="Developer documentation" href="sec_dev.html"/>
-        <link rel="prev" title="specio’s user API" href="api.html"/> 
+    <link rel="top" title="specio 0.0.1.dev0 documentation" href="index.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -93,13 +90,9 @@
               
             
             
-              <ul class="current">
+              <ul>
 <li class="toctree-l1"><a class="reference internal" href="sec_gettingstarted.html">Getting started</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="sec_user.html">User documentation</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="api.html">User API</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Docs for the formats</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="sec_user.html">User documentation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="sec_dev.html">Developer documentation</a></li>
 </ul>
 
@@ -145,15 +138,13 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-          <li><a href="sec_user.html">User documentation</a> &raquo;</li>
-        
-      <li>Docs for specio formats</li>
+      <li>FSM FSM Perkin Elmer Spotlight IR instrument binary format</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="_sources/formats.rst.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/format_fsm.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -166,21 +157,35 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="docs-for-specio-formats">
-<h1>Docs for specio formats<a class="headerlink" href="#docs-for-specio-formats" title="Permalink to this headline">¶</a></h1>
-<p>This page lists all formats currently supported by specio. Each format can
-support extra keyword arguments for reading and writing, which can be specified
-in the call to <code class="docutils literal"><span class="pre">get_reader()</span></code>, <code class="docutils literal"><span class="pre">specread()</span></code> etc.  Further, formats are free
-to provide additional methods on their Reader object. These
-parameters and extra methods are specified in the documentation for each
-format.</p>
-<blockquote>
-<div><ul class="simple">
-<li><a class="reference internal" href="format_dummy.html#dummy"><span class="std std-ref">DUMMY</span></a> - An example format that does nothing.</li>
-<li><a class="reference internal" href="format_spc.html#spc"><span class="std std-ref">SPC</span></a> - Galactic Industries Corporation binary format</li>
-<li><a class="reference internal" href="format_fsm.html#fsm"><span class="std std-ref">FSM</span></a> - FSM Perkin Elmer Spotlight IR instrument binary format</li>
-</ul>
-</div></blockquote>
+  <div class="section" id="fsm-fsm-perkin-elmer-spotlight-ir-instrument-binary-format">
+<span id="fsm"></span><h1>FSM FSM Perkin Elmer Spotlight IR instrument binary format<a class="headerlink" href="#fsm-fsm-perkin-elmer-spotlight-ir-instrument-binary-format" title="Permalink to this headline">¶</a></h1>
+<p>Extensions: <code class="docutils literal"><span class="pre">.fsm</span></code></p>
+<p>Plugin to read FSM file which stores IR spectroscopic data.</p>
+<p>This file format is used by Perkin Elmer Spotlight IR instrument.</p>
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">specio</span> <span class="k">import</span> <span class="n">specread</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">specio.datasets</span> <span class="k">import</span> <span class="n">load_fsm_path</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">spectra</span> <span class="o">=</span> <span class="n">specread</span><span class="p">(</span><span class="n">load_fsm_path</span><span class="p">())</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">spectra</span><span class="o">.</span><span class="n">wavelength</span>
+<span class="go">array([ 4000.,  3998.,  3996., ...,   724.,   722.,   720.])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">spectra</span><span class="o">.</span><span class="n">spectrum</span> 
+<span class="go">array([[  38.65655136,   38.6666069 ,   38.64698792, ...,   39.89584732,</span>
+<span class="go">          29.76511383,   28.13317108],</span>
+<span class="go">       [  44.61751175,   44.51957703,   44.59909439, ...,   27.84810638,</span>
+<span class="go">          48.12566376,   44.58335876],</span>
+<span class="go">       [  45.4976387 ,   45.44074631,   45.43001556, ...,  104.77108002,</span>
+<span class="go">          83.30805206,   55.3244133 ],</span>
+<span class="go">       ...</span>
+<span class="go">       [  81.6805954 ,   81.66387177,   81.57576752, ...,  114.77721405,</span>
+<span class="go">         125.94933319,  121.3031311 ],</span>
+<span class="go">       [  85.60238647,   85.57183075,   85.57678986, ...,  118.79945374,</span>
+<span class="go">         154.56201172,  135.4960022 ],</span>
+<span class="go">       [  87.86193085,   87.94794464,   88.03714752, ...,   59.7109108 ,</span>
+<span class="go">          76.84341431,  122.54582214]])</span>
+</pre></div>
+</div>
+</div>
 </div>
 
 
@@ -190,15 +195,6 @@ format.</p>
            </div>
           </div>
           <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="sec_dev.html" class="btn btn-neutral float-right" title="Developer documentation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="api.html" class="btn btn-neutral" title="specio’s user API" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
-    </div>
   
 
   <hr/>
